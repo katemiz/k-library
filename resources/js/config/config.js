@@ -4,17 +4,17 @@ export let params = {
     name: 'kapkara',
     logo : 'kapkara.svg',
     link : 'https://kapkara.one',
-    motto : 'Simplicity in Action',
+    motto : 'simplicity in action',
     title : 'web technologies | design house'
   },
 
   app : {
-    name : 'Tensor',
-    title : 'Competency/Skill Management Application',
+    name : 'k-library',
+    title : 'Personal Digital Library',
     description : 'Description here',
     app_header_logo : 'app_header_logo.svg',
     app_footer_logo : 'app_footer_logo.svg',
-    version : '2021.12.31',
+    version : '2022.04.08',
     copyright :'© 2021 All Rights Reserved',
   },
 

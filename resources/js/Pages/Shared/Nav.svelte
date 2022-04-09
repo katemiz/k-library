@@ -81,9 +81,6 @@
                 </div>
             </div>
 
-            {:else}
-                <Link class="navbar-item" href="/aboutus"><Icon name="people" size="{iconSize}" color="{iconColor}"/>&nbsp;Who Are We?</Link>
-                <Link class="navbar-item" href="/services"><Icon name="service" size="{iconSize}" color="{iconColor}"/>&nbsp;Services</Link>
             {/if}
 
         </div>
@@ -115,10 +112,6 @@
 
                     <Link href="/login" class="button is-ghost" as="button" preserveScroll>
                         <Icon name="user" size="{iconSize}" color="{iconColor}"/>&nbsp;Login
-                    </Link>
-
-                    <Link href="/register" class="button is-ghost" as="button" preserveScroll>
-                        <Icon name="register" size="{iconSize}" color="{iconColor}"/>&nbsp;Register
                     </Link>
 
                 {/if}
