@@ -25,17 +25,17 @@
 
     <div class="columns">
 
-        <div class="column is-half">
+        <div class="column  is-half">
 
-            <p class="mb-3">
-            It is crucial to link competencies with the strategic objectives, plans and capabilities of the Organization. Thus, competencies will increasingly be used as a basis for identifying individual and organizational needs and planning for development.</p>
-
-            <p class="mb-3">
-            Competency or skill management focusing on using the employee potential effectively to develop the necessary competencies and skills in order to run the organization smoothly and optimize the potential for profit and growth.</p>
-
-            <p class="mb-3">
-            With the help of proper skill management techniques, it is possible to combine project management and human resource management in an effective and efficient manner. The active management of competency and skill portfolio ensures the long-term competitiveness of company. </p>
-
+            <div class="content">
+                <ul>
+                    <li>Books</li>
+                    <li>Videos</li>
+                    <li>Images</li>
+                    <li>Any file that you can think of</li>
+                </ul>
+            </div>
+            
         </div>
 
         <div class="column is-half">

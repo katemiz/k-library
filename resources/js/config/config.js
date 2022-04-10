@@ -15,7 +15,7 @@ export let params = {
     app_header_logo : 'app_header_logo.svg',
     app_footer_logo : 'app_footer_logo.svg',
     version : '2022.04.08',
-    copyright :'© 2021 All Rights Reserved',
+    copyright :'© 2022 All Rights Reserved',
   },
 
   stack : [

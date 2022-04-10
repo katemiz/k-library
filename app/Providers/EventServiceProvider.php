@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Event;
 
 use App\Models\Diploma;
 use App\Models\Skill;
-use App\Models\Category;
 use App\Models\Profession;
 use App\Models\Role;
 use App\Models\Language;
@@ -18,7 +17,6 @@ use App\Models\Project;
 
 use App\Observers\SkillObserver;
 use App\Observers\DiplomaObserver;
-use App\Observers\CategoryObserver;
 use App\Observers\RoleObserver;
 use App\Observers\ProfessionObserver;
 use App\Observers\LanguageObserver;
@@ -48,7 +46,6 @@ class EventServiceProvider extends ServiceProvider
     {
         Skill::observe(SkillObserver::class);
         Diploma::observe(DiplomaObserver::class);
-        Category::observe(CategoryObserver::class);
         Role::observe(RoleObserver::class);
         Profession::observe(ProfessionObserver::class);
         Language::observe(LanguageObserver::class);

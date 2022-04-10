@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLanguagesTable extends Migration
+class CreateAssetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,21 @@ class CreateLanguagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
-            $table->text('remarks')->nullable();
-            $table->text('remarks_text')->nullable();
+
+            $table->integer('owner_id');
+            $table->text('asset_type');
+            $table->text('book_name');
+            $table->text('book_isbn');
+            $table->text('book_authors');
+
+            $table->text('item_notes')->nullable();
+            $table->text('item_notes_text')->nullable();
+
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
+
             $table->timestamps();
         });
     }
@@ -31,6 +39,6 @@ class CreateLanguagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('assets');
     }
 }

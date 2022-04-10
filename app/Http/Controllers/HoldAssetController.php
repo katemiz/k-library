@@ -13,7 +13,7 @@ use App\Models\Profession;
 use App\Models\Project;
 
 
-class SimpleItemController extends Controller
+class AssetController extends Controller
 {
 
     public function getdata($request) {

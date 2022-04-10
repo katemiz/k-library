@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Carbon\Carbon;
 
-class Category extends Model
+class Asset extends Model
 {
     use HasFactory;
 
@@ -49,27 +49,27 @@ class Category extends Model
 
     public static function getTreeData() {
 
-        $records = Category::orderBy('parent_id')->orderBy('title_en')->get()->toArray();
+        $records = Asset::orderBy('parent_id')->orderBy('title_en')->get()->toArray();
 
         $items = array();
 
         foreach ($records as $row) {            
-            $items[]  = Category::setUserTime($row);
+            $items[]  = Asset::setUserTime($row);
         }
 
-        return Category::convertToTree($items);
+        return Asset::convertToTree($items);
     }
 
     public static function getLatestItem() {
 
-        $latest = Category::latest()->first();
-        return Category::setUserTime($latest);
+        $latest = Asset::latest()->first();
+        return Asset::setUserTime($latest);
     }
 
 
 
     public static function getItemById($id) {
-        return Category::setUserTime(Category::find($id));
+        return Asset::setUserTime(Asset::find($id));
     }
 
 

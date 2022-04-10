@@ -15,7 +15,10 @@
 
 <section class="hero is-medium is-light has-background-primary-light has-background">
 
-    <img alt="library" class="hero-background" src="images/library.svg">
+
+    <figure class="image is-16by9">
+        <img alt="library" class="hero-background" src="images/library.svg">
+    </figure>
 
 <!--     <div class="ortala p-3 is-transparent">
         <p class="title has-text-centered golge">Manage Power</p>
