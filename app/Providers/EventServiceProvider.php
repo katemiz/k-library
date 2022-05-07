@@ -7,23 +7,6 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-
-use App\Models\Diploma;
-use App\Models\Skill;
-use App\Models\Profession;
-use App\Models\Role;
-use App\Models\Language;
-use App\Models\Project;
-
-use App\Observers\SkillObserver;
-use App\Observers\DiplomaObserver;
-use App\Observers\RoleObserver;
-use App\Observers\ProfessionObserver;
-use App\Observers\LanguageObserver;
-use App\Observers\ProjectObserver;
-
-
-
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -44,11 +27,16 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Skill::observe(SkillObserver::class);
-        Diploma::observe(DiplomaObserver::class);
-        Role::observe(RoleObserver::class);
-        Profession::observe(ProfessionObserver::class);
-        Language::observe(LanguageObserver::class);
-        Project::observe(ProjectObserver::class);
+        //
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return false;
     }
 }

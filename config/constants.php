@@ -1,19 +1,73 @@
 <?php
 
-
-
-
-
 return [
+    'company' => [
+        'name' => 'kapkara',
+        'logo' => 'kapkara.svg',
+        'link' => 'https://kapkara.one',
+        'motto' => 'simplicity in action',
+        'title' => 'web technologies | design house',
+    ],
+
+    'app' => [
+        'name' => 'k-library',
+        'title' => 'Personal Digital Library',
+        'description' => 'Description here',
+        'app_header_logo' => 'app_header_logo.svg',
+        'app_footer_logo' => 'app_footer_logo.svg',
+        'version' => '2022.04.08',
+        'copyright' => '© 2022 All Rights Reserved',
+    ],
 
     'favicon' => '/images/tensor_favicon.svg',
 
-    'table' => [
-        'no_of_results' => 12,
+    'icons' => [
+        'size' => '24',
+        'color' => [
+            'light' => 'hsl(0, 0%, 100%)',
+            'active' => 'hsl(217, 71%, 53%)',
+            'inactive' => 'hsl(0, 0%, 71%)',
+            'danger' => 'hsl(348, 86%, 43%)',
+        ],
     ],
 
+    'table' => [
+        'no_of_results' => 6,
+    ],
+
+    'asset_types' => [
+        [
+            'title' => 'Images-Pictures',
+            'type' => 'image',
+            'image' => 'type_image.svg',
+            'hilight' => false,
+        ],
+        [
+            'title' => 'Videos-Movies',
+            'type' => 'video',
+            'image' => 'type_video.svg',
+            'hilight' => false,
+        ],
+
+        [
+            'title' => 'Music',
+            'type' => 'music',
+            'image' => 'type_music.svg',
+            'hilight' => false,
+        ],
+
+        [
+            'title' => 'Books',
+            'type' => 'book',
+            'image' => 'type_book.svg',
+            'hilight' => false,
+        ],
+
+        [
+            'title' => 'Other - Any Type',
+            'type' => 'file',
+            'image' => 'type_file.svg',
+            'hilight' => false,
+        ],
+    ],
 ];
-
-
-
-

@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SkillController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\AssetController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
+use App\Http\Controllers\AssetController;
+
+use App\Http\Livewire\AssetsTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,42 +18,42 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('IndexGuest', ['logout' => false]);
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Index');
+    return view('dashboard');
 })
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/aboutus', function () {
-    return Inertia::render('AboutUs');
-});
-
-Route::get('/services', function () {
-    return Inertia::render('Services');
-});
+Route::get('lang/{lang}', [
+    'as' => 'lang.switch',
+    'uses' => 'App\Http\Controllers\LanguageController@switchLang',
+]);
 
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('resim/', [AssetController::class, 'resimCheck'])
+        ->name('resimCheck')
+        ->middleware('auth');
+
     // LIBRARY ASSET
-    Route::get('assets/{asset_type}', [AssetController::class, 'list']);
+    //Route::get('getall', [AssetController::class, 'listall']);
+    Route::get('/assets-list', AssetsTable::class)->name('myassets');
+    Route::get('assets-view/{id}', [AssetController::class, 'show']);
+
+    //Route::get('assets/{type}', [AssetController::class, 'list']);
     Route::get('assets-select-type', [AssetController::class, 'typeselect']);
-    Route::get('assets-form/{asset_type}', [AssetController::class, 'form']);
-    Route::get('assets-form/{asset_type}/{id}', [
-        AssetController::class,
-        'form',
-    ]);
-    Route::get('assets/{asset_type}/{id}', [AssetController::class, 'show']);
-    Route::post('assets-upsert/{asset_type}', [
-        AssetController::class,
-        'create',
-    ]);
-    Route::put('assets-upsert/{asset_type}', [
-        AssetController::class,
-        'update',
-    ]);
-    Route::delete('assets/{asset_type}', [AssetController::class, 'destroy']);
+    Route::get('assets-form/{type}', [AssetController::class, 'forms']);
+    Route::get('assets-form/{type}/{id}', [AssetController::class, 'forms']);
+    Route::post('assets-add/{type}', [AssetController::class, 'store']);
+    Route::put('assets-upsert/{type}', [AssetController::class, 'update']);
+    Route::delete('assets/{type}', [AssetController::class, 'destroy']);
+
+    Route::post('fetch', [AssetController::class, 'fetch']);
+
+    Route::get('dosya', [AssetController::class, 'dosyayap']);
+    Route::post('dosya', [AssetController::class, 'dosyayukle']);
 });

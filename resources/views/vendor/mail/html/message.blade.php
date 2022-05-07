@@ -2,8 +2,7 @@
 {{-- Header --}}
 @slot('header')
 @component('mail::header', ['url' => config('app.url')])
-{{-- {{ config('app.name') }} --}}
-<img src="{{asset('/images/app_footer_logo.png')}}" alt="{{config('app.name')}}">
+{{ config('constants.app.name') }}
 @endcomponent
 @endslot
 
@@ -22,7 +21,9 @@
 {{-- Footer --}}
 @slot('footer')
 @component('mail::footer')
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+© {{ date('Y') }} {{ config('constants.app.name') }}. @lang('All rights reserved.')
 @endcomponent
 @endslot
 @endcomponent
+
+
