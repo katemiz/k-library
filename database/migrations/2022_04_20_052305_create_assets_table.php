@@ -21,7 +21,7 @@ return new class extends Migration {
 
             $table->foreignIdFor(User::class);
 
-            $table->text('asset_type');
+            //$table->text('asset_type');
             $table->string('title')->nullable();
             $table->string('notes')->nullable();
 

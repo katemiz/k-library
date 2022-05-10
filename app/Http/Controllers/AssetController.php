@@ -85,7 +85,6 @@ class AssetController extends Controller
 
     public function store(Request $req)
     {
-        $assetdata['asset_type'] = $req->type;
         $assetdata['owner_id'] = Auth::id();
         $assetdata['user_id'] = Auth::id();
         $assetdata['title'] = $req->title;
@@ -93,16 +92,36 @@ class AssetController extends Controller
 
         $new_asset = Asset::create($assetdata);
 
+        $this->addFiles($req, $new_asset->id);
+
+        return redirect()->route('view', ['id' => $new_asset->id]);
+    }
+
+    public function update(Request $req)
+    {
+        Asset::find($req->id)->update([
+            'title' => $req->title,
+            'notes' => $req->editor_data,
+        ]);
+
+        $this->addFiles($req, $req->id);
+        $this->deleteFiles($req, $req->id);
+
+        return redirect()->route('view', ['id' => $req->id]);
+    }
+
+    public function addFiles($req, $id)
+    {
         if ($req->has('assets')) {
             foreach ($req->file('assets') as $dosya) {
                 $yenidosya = Storage::putFile(
-                    'klibrary/usr' . Auth::id(),
+                    'klibrary/usr' . Auth::id() . '/' . $dosya->getMimeType(),
                     $dosya,
                     'private'
                 );
 
                 $dosya_data = [
-                    'asset_id' => $new_asset->id,
+                    'asset_id' => $id,
                     'user_id' => Auth::id(),
                     'org_name' => $dosya->getClientOriginalName(),
                     'size' => $dosya->getSize(),
@@ -128,31 +147,64 @@ class AssetController extends Controller
                 }
             }
         }
-
-        return view('asset.view', [
-            'asset' => Asset::latest()->first(),
-            'notification' => [
-                'type' => 'success',
-                'message' => 'Asset has been added successfully',
-            ],
-        ]);
     }
 
-    public function typeselect(Request $request)
+    public function deleteFiles($req, $id)
     {
-        return view('asset.typeselect');
+        $files = explode(',', $req->filesToDelete);
+
+        if (count($files) > 0) {
+            foreach ($files as $attach) {
+                $pieces = explode('_', $attach);
+
+                $mimetype = $pieces['0'];
+                $id = $pieces['1'];
+
+                switch ($mimetype) {
+                    // PHOTO
+                    case 'image/jpeg':
+                    case 'image/png':
+                    case 'image/gif':
+                        $attach = Photo::find($id);
+                        break;
+
+                    // BOOK
+                    default:
+                    case 'application/pdf':
+                        $attach = Pdf::find($id);
+                        break;
+                }
+
+                Storage::delete($attach->stored_as);
+                $attach->delete();
+            }
+        }
+
+        return true;
     }
 
     public function forms(Request $request)
     {
-        return view('asset.form', ['type' => $request->type]);
+        $asset = false;
+
+        if ($request->id) {
+            $asset = Asset::find($request->id);
+        }
+
+        $asset->attachments = $asset->photos->merge($asset->pdfs);
+        return view('asset.form', ['asset' => $asset]);
     }
 
     public function show(Request $request)
     {
         $asset = Asset::find($request->id);
 
+        if (Auth::id() !== $asset->id) {
+            return false;
+        }
+
         $notification = false;
+        $files = [];
 
         if (count($asset->photos) > 0) {
             foreach ($asset->photos as $p) {
@@ -160,33 +212,14 @@ class AssetController extends Controller
                     ->fit(300, 320)
                     ->encode('data-url');
             }
-        } else {
-            $files = [];
-            $notification = [
-                'type' => 'warning',
-                'message' => 'No files for this asset yet!',
-            ];
         }
 
         $asset->dosyalar = $files;
+        $asset->attachments = $asset->photos->merge($asset->pdfs);
 
         return view('asset.view', [
             'asset' => $asset,
             'notification' => $notification,
         ]);
     }
-
-    /*     public function resimCheck(Request $request, $imagename)
-    {
-        $profile_path = storage_path('app/public/images/' . $imagename);
-
-        $img_token = Session::get('img_token');
-
-        if ($img_token == $request->img_token) {
-            Session::forget('img_token');
-            return response()->file($profile_path);
-        } else {
-            abort(404);
-        }
-    } */
 }

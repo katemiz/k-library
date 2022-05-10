@@ -27,7 +27,7 @@
             </a>
 
 
-            <a href="/assets-select-type" class="navbar-item">
+            <a href="/assets-form" class="navbar-item">
                 <span class="icon">
                     <x-icon icon="add-asset" fill="{{config('constants.icons.color.active')}}"/>
                 </span>

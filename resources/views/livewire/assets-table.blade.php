@@ -80,6 +80,8 @@
                         </span>
                     </th>
 
+                    <th class="is-2">Notes/Remarks</th>
+
                     <th class="is-2">
                         <span class="icon-text" wire:click="sortBy('created_at')">
                             <span class="icon {{ $sortTimeDirection === 'asc' ? 'is-hidden' : ''}}">
@@ -104,9 +106,10 @@
                             <a href="/assets-view/{{ $item->id }}">
                                 {{$item->title}}
                             </a>
-
-                            {!! $item->notes !!}
                         </td>
+
+                        <td>{!! $item->notes !!}</td>
+
 
                         <td>{{$item->created_at}}</td>
 

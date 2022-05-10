@@ -40,20 +40,21 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('auth');
 
     // LIBRARY ASSET
-    //Route::get('getall', [AssetController::class, 'listall']);
     Route::get('/assets-list', AssetsTable::class)->name('myassets');
-    Route::get('assets-view/{id}', [AssetController::class, 'show']);
+    Route::get('assets-view/{id}', [AssetController::class, 'show'])->name(
+        'view'
+    );
 
-    //Route::get('assets/{type}', [AssetController::class, 'list']);
-    Route::get('assets-select-type', [AssetController::class, 'typeselect']);
-    Route::get('assets-form/{type}', [AssetController::class, 'forms']);
-    Route::get('assets-form/{type}/{id}', [AssetController::class, 'forms']);
-    Route::post('assets-add/{type}', [AssetController::class, 'store']);
-    Route::put('assets-upsert/{type}', [AssetController::class, 'update']);
-    Route::delete('assets/{type}', [AssetController::class, 'destroy']);
+    //Route::get('assets-select-type', [AssetController::class, 'typeselect']);
+    Route::get('assets-form', [AssetController::class, 'forms']);
+    Route::get('assets-form/{id}', [AssetController::class, 'forms']);
+    Route::post('assets-add', [AssetController::class, 'store']);
+    Route::post('assets-update/{id}', [AssetController::class, 'update']);
 
-    Route::post('fetch', [AssetController::class, 'fetch']);
+    // Route::delete('assets/{type}', [AssetController::class, 'destroy']);
+
+    /*     Route::post('fetch', [AssetController::class, 'fetch']);
 
     Route::get('dosya', [AssetController::class, 'dosyayap']);
-    Route::post('dosya', [AssetController::class, 'dosyayukle']);
+    Route::post('dosya', [AssetController::class, 'dosyayukle']); */
 });
