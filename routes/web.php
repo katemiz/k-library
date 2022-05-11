@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\AssetController;
-
 use App\Http\Livewire\AssetsTable;
 
 /*
@@ -50,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('assets-form/{id}', [AssetController::class, 'forms']);
     Route::post('assets-add', [AssetController::class, 'store']);
     Route::post('assets-update/{id}', [AssetController::class, 'update']);
+
+    Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
+    Route::get('delete/{id}', [AssetController::class, 'destroy']);
 
     // Route::delete('assets/{type}', [AssetController::class, 'destroy']);
 

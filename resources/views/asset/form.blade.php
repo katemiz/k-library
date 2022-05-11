@@ -123,10 +123,10 @@
             <form action="{{ $asset ? '/assets-update/'.$asset->id : '/assets-add' }}" method="{{ $asset ? 'POST' : 'POST' }}" enctype="multipart/form-data">
             @csrf
 
-            <input type="hidden" id="id" value="{{ $asset ? $asset->id : false }}">
-            <input type="hidden" id="filesToUpload" value="0">
-            <input type="label" id="filesToDelete" name="filesToDelete" value="">
-            <input type="hidden" id="filesToExclude" name="filesToExclude" value="0">
+            <input type="hidden" id="id" value="{{ $asset ? $asset->id : false }}" autocomplete="off">
+            <input type="hidden" id="filesToUpload" value="0" autocomplete="off">
+            <input type="hidden" id="filesToDelete" name="filesToDelete" value="" autocomplete="off">
+            <input type="hidden" id="filesToExclude" name="filesToExclude" value="0" autocomplete="off">
 
             <div class="field">
                 <label class="label">Asset title</label>

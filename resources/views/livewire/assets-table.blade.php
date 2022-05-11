@@ -5,11 +5,11 @@
     </header>
 
     <figure class="image is-16by9">
-        <img alt="library" class="hero-background" src="images/library2.svg">
+        <img alt="library" class="hero-background" src="{{asset('images/library2.svg')}}">
     </figure>
 
     @if ($notification)
-        <x-notification notification="{{$notification}}"/>
+        <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>
     @endif
 
 
@@ -122,6 +122,7 @@
                             <a href="/assets-form/{{ $item->id }}" class="icon">
                                 <x-icon icon="edit" fill="{{config('constants.icons.color.active')}}"/>
                             </a>
+
                         </td>
                     </tr>
 

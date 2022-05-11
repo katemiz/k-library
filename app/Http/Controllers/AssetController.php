@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 use App\Models\Asset;
 use App\Models\Photo;
@@ -56,19 +57,7 @@ class AssetController extends Controller
             ->toArray();
     }
 
-    /*     public function fetch(Request $request)
-    {
-
-        $data = [
-            'aa' => 'aaaaa',
-            'bb' => 'bbbbb',
-            'q' => Response::json($request->query),
-        ];
-
-        return Response::json($data);
-    }
- */
-    public function listall(Request $request)
+    /*     public function listall(Request $request)
     {
         if ($request->sc && $request->so) {
             $this->sortorders[$request->sc] = $request->so;
@@ -81,7 +70,7 @@ class AssetController extends Controller
             'filters' => $request->only(['search']),
             'notification' => false,
         ]);
-    }
+    } */
 
     public function store(Request $req)
     {
@@ -151,6 +140,10 @@ class AssetController extends Controller
 
     public function deleteFiles($req, $id)
     {
+        if (strlen(trim($req->filesToDelete)) < 1) {
+            return true;
+        }
+
         $files = explode(',', $req->filesToDelete);
 
         if (count($files) > 0) {
@@ -199,7 +192,7 @@ class AssetController extends Controller
     {
         $asset = Asset::find($request->id);
 
-        if (Auth::id() !== $asset->id) {
+        if (Auth::id() !== $asset->owner_id) {
             return false;
         }
 
@@ -215,11 +208,61 @@ class AssetController extends Controller
         }
 
         $asset->dosyalar = $files;
-        $asset->attachments = $asset->photos->merge($asset->pdfs);
+        //$asset->attachments = $asset->photos->merge($asset->pdfs);
 
         return view('asset.view', [
             'asset' => $asset,
             'notification' => $notification,
         ]);
+    }
+
+    public function delconfirm(Request $request)
+    {
+        $asset = Asset::find($request->id);
+
+        $asset->attachments = $asset->photos->merge($asset->pdfs);
+
+        $notification = [
+            'type' => 'warning',
+            'message' => 'Are you sure',
+        ];
+
+        $asset->random = $this->codeId($asset->id);
+
+        return view('asset.sure-delete', [
+            'asset' => $asset,
+            'notification' => $notification,
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $asset = Asset::find($this->codeId($request->id, false));
+
+        foreach ($asset->photos as $photo) {
+            Photo::find($photo->id)->delete();
+            Storage::delete($photo->stored_as);
+        }
+
+        foreach ($asset->pdfs as $pdf) {
+            Pdf::find($pdf->id)->delete();
+            Storage::delete($pdf->stored_as);
+        }
+
+        $asset->delete();
+
+        return redirect()->route('myassets', ['m' => 'delete']);
+    }
+
+    function codeId($id, $encode = true)
+    {
+        // f(x) = 5717*x-17
+
+        if ($encode) {
+            return 5717 * $id - 19;
+        }
+
+        // DECODE
+        return ($id + 19) / 5717;
     }
 }

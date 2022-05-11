@@ -7,6 +7,8 @@ use Livewire\Component;
 use App\Models\Asset;
 use App\Models\Image;
 
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
@@ -46,8 +48,16 @@ class AssetsTable extends Component
         }
     }
 
-    public function render()
+    public function render(Request $request)
     {
+        if ($request->m) {
+            $this->notification = [
+                'type' => 'is-primary',
+                'message' =>
+                    'Asset and its files has been deleted successfully',
+            ];
+        }
+
         $q = Asset::query()
             ->orderBy($this->sortTimeField, $this->sortTimeDirection)
             ->orderBy($this->sortField, $this->sortDirection);
@@ -72,6 +82,7 @@ class AssetsTable extends Component
 
         return view('livewire.assets-table', [
             'assets' => $assets,
+            'notification' => $this->notification,
         ]);
     }
 

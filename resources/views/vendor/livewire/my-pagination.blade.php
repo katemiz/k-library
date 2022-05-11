@@ -68,7 +68,7 @@
                                     <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
                                         @if ($page == $paginator->currentPage())
                                             <span aria-current="page">
-                                                <span class="pagination-link is-current">{{ $page }}</span>
+                                                <span class="pagination-link is-current is-small">{{ $page }}</span>
                                             </span>
                                         @else
                                             <button wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="pagination-link" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">

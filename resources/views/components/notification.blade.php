@@ -1,6 +1,6 @@
 @if ($notification)
 
-    @switch()
+    @switch($notification["type"])
         @case('success')
             <div class="notification is-success is-light">
             @break

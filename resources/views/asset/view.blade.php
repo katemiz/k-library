@@ -16,7 +16,8 @@
 
         <!-- Right side -->
         <div class="level-right">
-        <a href="/assets-form/{{ $asset->id }}" class="button is-link">Edit</a>
+            <a href="/assets-form/{{ $asset->id }}" class="button is-link mr-2">Edit</a>
+            <a href="/delconfirm/{{ $asset->id }}" class="button is-danger is-outlined">Delete</a>
         </div>
     </nav>
 
@@ -31,10 +32,11 @@
     {{-- PHOTOS --}}
 
     @if (count($asset->photos) > 0)
+    <div class="box">
 
     <p class="menu-label">IMAGE FILES </p>
 
-    <div class="columns is-multiline box mt-6">
+    <div class="columns is-multiline mt-6">
 
         @foreach ($asset->photos as $photo )
         <div class="column is-3-desktop">
@@ -76,7 +78,7 @@
 
     </div>
 
-
+    </div>
     @endif
 
 
