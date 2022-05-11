@@ -14,6 +14,7 @@ use App\Models\Photo;
 use App\Models\Pdf;
 
 use Image;
+use Carbon\Carbon;
 
 use Livewire\WithPagination;
 
@@ -191,6 +192,8 @@ class AssetController extends Controller
     public function show(Request $request)
     {
         $asset = Asset::find($request->id);
+
+        $asset->carbondate = Carbon::parse($asset->created_at)->diffForHumans();
 
         if (Auth::id() !== $asset->owner_id) {
             return false;

@@ -25,6 +25,7 @@ return [
         'size' => '24',
         'color' => [
             'light' => 'hsl(0, 0%, 100%)',
+            'dark' => 'hsl(0, 0%, 4%)',
             'active' => 'hsl(217, 71%, 53%)',
             'inactive' => 'hsl(0, 0%, 71%)',
             'danger' => 'hsl(348, 86%, 43%)',
