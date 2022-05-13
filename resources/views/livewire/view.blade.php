@@ -1,8 +1,6 @@
-@extends('layouts.layout')
+<div class="section container">
 
-@section('content')
-
-    <script>
+{{--     <script>
         function showModal(id) {
             document.getElementById(id).classList.add('is-active')
         }
@@ -12,10 +10,8 @@
         }
 
 
-        function showImg(id) {
 
-        }
-    </script>
+    </script> --}}
 
     <!-- Main container -->
     <nav class="level">
@@ -55,7 +51,7 @@
         <div class="column is-3-desktop">
             <div class="card">
 
-                <div class="card-image" onclick="showModal('img')">
+                <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$photo->id}}')">
                     <figure class="image ">
                         <img src="{{ $asset->dosyalar[$photo->id] }}">
                     </figure>
@@ -166,15 +162,15 @@
     @endforeach
 
     {{-- IMAGE MODAL --}}
-    <div class="modal" id="img">
-        <div class="modal-background" onclick="closeModal('img')"></div>
+    <div class="modal {{$isImgModalVisible ? 'is-active':''}}" id="img">
+        <div class="modal-background" wire:click="closeModal('{{$asset->id}}')"></div>
         <div class="modal-content">
-          <p class="image is-4by3">
-            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="">
+          <p class="image">
+            <img src="{{ asset($pdata) }}">
           </p>
         </div>
-        <button class="modal-close is-large" aria-label="close" onclick="closeModal('img')"></button>
+        <button class="modal-close is-large" aria-label="close" wire:click="closeModal('{{$asset->id}}')"></button>
     </div>
 
-@endsection
-
+    <h1>PFATA {{ asset($pdata) }}</h1>
+</div>

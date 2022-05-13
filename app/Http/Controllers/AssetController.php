@@ -58,21 +58,6 @@ class AssetController extends Controller
             ->toArray();
     }
 
-    /*     public function listall(Request $request)
-    {
-        if ($request->sc && $request->so) {
-            $this->sortorders[$request->sc] = $request->so;
-            $this->active_sortcolumn = $request->sc;
-        }
-
-        return view('asset.list', [
-            'assets' => $this->getAssets($request),
-            'sortorders' => $this->sortorders,
-            'filters' => $request->only(['search']),
-            'notification' => false,
-        ]);
-    } */
-
     public function store(Request $req)
     {
         $assetdata['owner_id'] = Auth::id();

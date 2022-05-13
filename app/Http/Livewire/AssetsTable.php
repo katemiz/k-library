@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 
 use App\Models\Asset;
-use App\Models\Image;
+use App\Models\Photo;
 
 use Illuminate\Http\Request;
 

@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\PdfController;
+
 use App\Http\Livewire\AssetsTable;
+use App\Http\Livewire\AssetsView;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
 
     // LIBRARY ASSET
     Route::get('/assets-list', AssetsTable::class)->name('myassets');
+    Route::get('/assets-view2/{id}', AssetsView::class)->name('view2');
+
     Route::get('assets-view/{id}', [AssetController::class, 'show'])->name(
         'view'
     );
@@ -51,6 +56,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
     Route::get('delete/{id}', [AssetController::class, 'destroy']);
+
+    Route::get('view-pdf/{id}', [PdfController::class, 'securePdf']);
 
     // Route::delete('assets/{type}', [AssetController::class, 'destroy']);
 

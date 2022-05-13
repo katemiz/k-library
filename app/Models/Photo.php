@@ -89,4 +89,17 @@ class Photo extends Model
         }
         return floatval($parts[0]) / floatval($parts[1]);
     }
+
+    /*     public function showProfilePicture($path)
+    {
+        $profile_path = storage_path(
+            'app/public/images/profile/' . $user_id . '/' . $filename
+        );
+
+        if (Auth::user()->id == $user_id) {
+            return response()->file($profile_path);
+        } else {
+            abort(404);
+        }
+    } */
 }
