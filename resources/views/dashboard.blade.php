@@ -49,9 +49,6 @@
 
 
 
-        <x-summary></x-summary>
-
-        <x-noitem></x-noitem>
 
     </section>
 

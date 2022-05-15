@@ -18,7 +18,7 @@
         <!-- Left side -->
         <div class="level-left">
             <div class="level-item  has-text-centered">
-                <a href="/assets-select-type" class="button is-link">
+                <a href="/assets-form" class="button is-link">
                     <span class="icon is-small">
                         <x-icon icon="plus" fill="{{config('constants.icons.color.light')}}"/>
                     </span>

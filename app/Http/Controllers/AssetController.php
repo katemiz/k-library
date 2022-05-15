@@ -168,9 +168,9 @@ class AssetController extends Controller
 
         if ($request->id) {
             $asset = Asset::find($request->id);
+            $asset->attachments = $asset->photos->merge($asset->pdfs);
         }
 
-        $asset->attachments = $asset->photos->merge($asset->pdfs);
         return view('asset.form', ['asset' => $asset]);
     }
 
@@ -204,7 +204,7 @@ class AssetController extends Controller
         ]);
     }
 
-    public function delconfirm(Request $request)
+    /*     public function delconfirm(Request $request)
     {
         $asset = Asset::find($request->id);
 
@@ -221,9 +221,9 @@ class AssetController extends Controller
             'asset' => $asset,
             'notification' => $notification,
         ]);
-    }
+    } */
 
-    public function destroy(Request $request)
+    /*     public function destroy(Request $request)
     {
         $asset = Asset::find($this->codeId($request->id, false));
 
@@ -252,5 +252,5 @@ class AssetController extends Controller
 
         // DECODE
         return ($id + 19) / 5717;
-    }
+    } */
 }

@@ -36,7 +36,7 @@ return [
 
         'klibrary' => [
             'driver' => 'local',
-            'root' => storage_path('app/klibrary'),
+            'root' => storage_path('app/public/klibrary'),
             'throw' => false,
         ],
 

@@ -18,6 +18,10 @@ use App\Http\Livewire\AssetsView;
 |
 */
 
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -42,11 +46,11 @@ Route::middleware(['auth'])->group(function () {
 
     // LIBRARY ASSET
     Route::get('/assets-list', AssetsTable::class)->name('myassets');
-    Route::get('/assets-view2/{id}', AssetsView::class)->name('view2');
+    Route::get('/assets-view/{id}', AssetsView::class)->name('view');
 
-    Route::get('assets-view/{id}', [AssetController::class, 'show'])->name(
+    /*     Route::get('assets-view/{id}', [AssetController::class, 'show'])->name(
         'view'
-    );
+    ); */
 
     //Route::get('assets-select-type', [AssetController::class, 'typeselect']);
     Route::get('assets-form', [AssetController::class, 'forms']);
