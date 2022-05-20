@@ -3,21 +3,22 @@
     <script>
 
         function confirmDelete(assetId,photoId) {
+            let msg,cbutton,action,title
 
-            let msg,cbutton,action
-
-            if (assetId && photoId) {
-                action = 'asset'
+            if (assetId && assetId > 0 && photoId && photoId >0) {
+                action = 'photo'
                 msg = "Selected photo/image will be deleted. You won't be able to revert this!"
                 cbutton = 'Delete Image'
+                title= 'Delete Image?'
             } else {
-                action = 'photo'
+                action = 'asset'
                 msg = "This action is irreversible. You won't be able to revert this!"
                 cbutton = 'Delete Asset'
+                title= 'Delete Asset and Attachments?'
             }
 
             Swal.fire({
-                title: 'Are you sure?',
+                title: title,
                 text: msg,
                 icon: 'warning',
                 showCancelButton: true,
@@ -26,10 +27,8 @@
                 confirmButtonText: cbutton
             }).then((result) => {
 
-                console.log(result)
                 if (result.isConfirmed) {
-
-                    if (action == 'action') {
+                    if (action == 'asset') {
                         @this.call('deleteAsset',assetId,photoId)
                     } else {
                         @this.call('deletePhoto',assetId,photoId)
@@ -78,12 +77,12 @@
     @endif
 
     {{-- PHOTOS --}}
+    @if ($notification)
+        <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>
+    @endif
+
     @if (count($asset->photos) > 0)
     <div class="box">
-
-        @if ($notification)
-        <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>
-        @endif
 
         <p class="menu-label">IMAGE FILES </p>
 

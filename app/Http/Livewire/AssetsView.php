@@ -6,6 +6,7 @@ use Livewire\Component;
 
 use App\Models\Asset;
 use App\Models\Photo;
+use App\Models\Pdf;
 
 use Illuminate\Http\Request;
 
@@ -92,8 +93,7 @@ class AssetsView extends Component
 
     public function deleteAsset(Request $request, $assetId, $photoId)
     {
-        //dd($aaa);
-        $asset = Asset::find($request->assetId);
+        $asset = Asset::find($assetId);
 
         foreach ($asset->photos as $photo) {
             Photo::find($photo->id)->delete();
