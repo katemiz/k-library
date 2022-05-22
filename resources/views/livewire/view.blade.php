@@ -55,6 +55,10 @@
 
     </script>
 
+    @php
+       echo ini_get("upload_max_filesize");
+    @endphp
+
     <!-- Main container -->
     <nav class="level">
         <!-- Left side -->

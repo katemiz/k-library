@@ -89,11 +89,9 @@ class AssetController extends Controller
     {
         if ($req->has('assets')) {
             foreach ($req->file('assets') as $dosya) {
-                $yenidosya = Storage::putFile(
-                    'klibrary/usr' . Auth::id() . '/' . $dosya->getMimeType(),
-                    $dosya,
-                    'private'
-                );
+                $filename = '/usr' . Auth::id() . '/' . $dosya->getMimeType();
+
+                $yenidosya = Storage::disk('local')->put($filename, $dosya);
 
                 $dosya_data = [
                     'asset_id' => $id,
@@ -196,61 +194,10 @@ class AssetController extends Controller
         }
 
         $asset->dosyalar = $files;
-        //$asset->attachments = $asset->photos->merge($asset->pdfs);
 
         return view('asset.view', [
             'asset' => $asset,
             'notification' => $notification,
         ]);
     }
-
-    /*     public function delconfirm(Request $request)
-    {
-        $asset = Asset::find($request->id);
-
-        $asset->attachments = $asset->photos->merge($asset->pdfs);
-
-        $notification = [
-            'type' => 'warning',
-            'message' => 'Are you sure',
-        ];
-
-        $asset->random = $this->codeId($asset->id);
-
-        return view('asset.sure-delete', [
-            'asset' => $asset,
-            'notification' => $notification,
-        ]);
-    } */
-
-    /*     public function destroy(Request $request)
-    {
-        $asset = Asset::find($this->codeId($request->id, false));
-
-        foreach ($asset->photos as $photo) {
-            Photo::find($photo->id)->delete();
-            Storage::delete($photo->stored_as);
-        }
-
-        foreach ($asset->pdfs as $pdf) {
-            Pdf::find($pdf->id)->delete();
-            Storage::delete($pdf->stored_as);
-        }
-
-        $asset->delete();
-
-        return redirect()->route('myassets', ['m' => 'delete']);
-    }
-
-    function codeId($id, $encode = true)
-    {
-        // f(x) = 5717*x-17
-
-        if ($encode) {
-            return 5717 * $id - 19;
-        }
-
-        // DECODE
-        return ($id + 19) / 5717;
-    } */
 }

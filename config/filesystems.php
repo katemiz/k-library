@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'klibrary'),
+    'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,13 +30,10 @@ return [
     'disks' => [
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
-            'throw' => false,
-        ],
-
-        'klibrary' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/klibrary'),
+            'root' =>
+                env('APP_ENV') === 'local'
+                    ? storage_path('app')
+                    : env('APP_STORAGE_DIR'),
             'throw' => false,
         ],
 
