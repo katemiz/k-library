@@ -4,7 +4,7 @@
 @section('content')
 
 
-    <section class="hero is-medium is-light has-background-primary-light has-background">
+    <section class="hero is-medium ">
 
 
         <figure class="image is-16by9">
@@ -17,8 +17,8 @@
     <section class="section container">
 
         <header class="my-6">
-            <h1 class="title has-text-weight-light is-size-1">Personal Digital Library</h1>
-            <h2 class="subtitle has-text-weight-light">Private, Just for you</h2>
+            <h1 class="title has-text-weight-light is-size-1">Personal Digital Library - PDL</h1>
+            <h2 class="subtitle has-text-weight-light">Private, Only for You</h2>
         </header>
 
         <p class="mb-3">
