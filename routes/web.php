@@ -26,9 +26,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+/* Route::get('/dashboard', function () {
     return view('dashboard');
 })
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard'); */
+
+Route::get('/dashboard', [AssetController::class, 'stats'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -48,12 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/assets-list', AssetsTable::class)->name('myassets');
     Route::get('/assets-view/{id}', AssetsView::class)->name('view');
 
-    /*     Route::get('assets-view/{id}', [AssetController::class, 'show'])->name(
-        'view'
-    ); */
-
-    //Route::get('assets-select-type', [AssetController::class, 'typeselect']);
     Route::get('assets-form', [AssetController::class, 'forms']);
+    Route::get('assets-addfiles', [AssetController::class, 'addfilesform']);
+
     Route::get('assets-form/{id}', [AssetController::class, 'forms']);
     Route::post('assets-add', [AssetController::class, 'store']);
     Route::post('assets-update/{id}', [AssetController::class, 'update']);
@@ -62,11 +63,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('delete/{id}', [AssetController::class, 'destroy']);
 
     Route::get('view-pdf/{id}', [PdfController::class, 'securePdf']);
-
-    // Route::delete('assets/{type}', [AssetController::class, 'destroy']);
-
-    /*     Route::post('fetch', [AssetController::class, 'fetch']);
-
-    Route::get('dosya', [AssetController::class, 'dosyayap']);
-    Route::post('dosya', [AssetController::class, 'dosyayukle']); */
 });

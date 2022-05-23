@@ -12,6 +12,8 @@ return [
     'app' => [
         'name' => 'k-library',
         'title' => 'Personal Digital Library',
+        'welcome_header' => 'Personal Digital Library - PDL',
+        'welcome_subtitle' => 'Private, Only for You',
         'description' => 'Description here',
         'app_header_logo' => 'app_header_logo.svg',
         'app_footer_logo' => 'app_footer_logo.svg',

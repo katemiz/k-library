@@ -4,9 +4,9 @@
         <h1 class="title is-size-1 has-text-weight-light">My Assets</h1>
     </header>
 
-    <figure class="image is-16by9">
+{{--     <figure class="image is-16by9">
         <img alt="library" class="hero-background" src="{{asset('images/library2.svg')}}">
-    </figure>
+    </figure> --}}
 
     @if ($notification)
         <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>

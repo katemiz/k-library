@@ -114,8 +114,13 @@
     <div class="section container">
 
         <header class="mt-6">
-            <h1 class="title is-size-1 has-text-weight-light">{{$asset ? 'Edit Asset' : 'New Asset'}}</h1>
-            <h1 class="subtitle">Attach any type of files</h1>
+            @if ($addfilesonly)
+                <h1 class="title is-size-1 has-text-weight-light">Add Files</h1>
+                <h1 class="subtitle">Attach any type of files</h1>
+            @else
+                <h1 class="title is-size-1 has-text-weight-light">{{$asset ? 'Edit Asset' : 'New Asset'}}</h1>
+                <h1 class="subtitle">Attach any type of files</h1>
+            @endif
         </header>
 
         <div class="column box mt-6">
@@ -128,6 +133,7 @@
             <input type="hidden" id="filesToDelete" name="filesToDelete" value="" autocomplete="off">
             <input type="hidden" id="filesToExclude" name="filesToExclude" value="0" autocomplete="off">
 
+            @if (!$addfilesonly)
             <div class="field">
                 <label class="label">Asset title</label>
                 <div class="control">
@@ -136,6 +142,9 @@
                     value="{{$asset ? $asset->title : ''}}">
                 </div>
             </div>
+            @endif
+
+            @if ($asset)
 
             <div class="field">
                 <label class="label">Files for this asset</label>
@@ -152,7 +161,6 @@
                     </thead>
                     <tbody>
 
-                        @if ($asset)
 
                             @if ($asset->attachments)
                                 @foreach ($asset->attachments as  $attachment)
@@ -173,11 +181,12 @@
                                 @endforeach
                             @endif
 
-                        @endif
 
                     </tbody>
                 </table>
                 </div>
+                @endif
+
 
 
 
@@ -227,11 +236,13 @@
                 </div>
             </div>
 
+            @if (!$addfilesonly)
             <div class="field">
                 <input type="hidden" name="editor_data" id="ckeditor" value="{{$asset ? $asset->notes : ''}}">
                 <label class="label">Notes/Remarks</label>
                 <div class="column" id="editor"></div>
             </div>
+            @endif
 
             <button type="submit" class="button is-link is-light">{{$asset ? 'Update' : 'Save'}}</button>
 
@@ -242,6 +253,7 @@
     </div>
 
 
+    @if (!$addfilesonly)
     <script>
         ClassicEditor
         .create( document.querySelector('#editor') )
@@ -261,6 +273,7 @@
             console.error(error);
         });
     </script>
+    @endif
 
 
   @endsection

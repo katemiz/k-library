@@ -20,19 +20,38 @@
 
         @if(Auth::check())
 
-            <a href="{{route('myassets')}}" class="navbar-item">
+           <a href="{{route('dashboard')}}" class="navbar-item">
                 <span class="icon">
                     <x-icon icon="home" fill="{{config('constants.icons.color.active')}}"/>
                 </span>
             </a>
 
 
+            <a href="{{route('myassets')}}" class="navbar-item">
+                <span class="icon">
+                    <x-icon icon="bag" fill="{{config('constants.icons.color.active')}}"/>
+                </span>
+                <span class="ml-1">My Assets</span>
+            </a>
+
+
+
+
             <a href="/assets-form" class="navbar-item">
                 <span class="icon">
                     <x-icon icon="add-asset" fill="{{config('constants.icons.color.active')}}"/>
                 </span>
-                <span class="ml-1">Add</span>
+                <span class="ml-1">Add Asset</span>
             </a>
+
+
+            <a href="/assets-addfiles" class="navbar-item">
+                <span class="icon">
+                    <x-icon icon="add-file" fill="{{config('constants.icons.color.active')}}"/>
+                </span>
+                <span class="ml-1">Add Files</span>
+            </a>
+
 
 
 

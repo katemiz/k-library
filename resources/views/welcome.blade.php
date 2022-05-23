@@ -17,12 +17,17 @@
     <section class="section container">
 
         <header class="my-6">
-            <h1 class="title has-text-weight-light is-size-1">Personal Digital Library - PDL</h1>
-            <h2 class="subtitle has-text-weight-light">Private, Only for You</h2>
+            <h1 class="title has-text-weight-light is-size-1">{{config('constants.app.welcome_header')}}</h1>
+            <h2 class="subtitle has-text-weight-light">{{config('constants.app.welcome_subtitle')}}</h2>
         </header>
 
+
         <p class="mb-3">
-        Competency is a set of skills, related knowledge and attributes that allow an individual to perform a task or an activity within a specific function or job. Therefore it is important for the success of the Organization in achieving its strategic goals, as well as the success of individual employee. Any function in the Organization requires a set of essential managerial/generic and technical/functional competencies to be performed effectively.
+            <a href="https://github.com/katemiz/k-library">{{config('constants.app.name')}}</a>, "{{config('constants.app.title')}}" is an app designed to keep your digital assets in one place and accessible <strong>only for you</strong>. Wherever your are, whenever you need your digital assets, theyare available for you only.
+        </p>
+
+        <p class="mb-3">
+            This app is suitable to deploy and run your own server. You only need a dedicated server (<a href="https://www.raspberrypi.org/">Raspberry Pi</a> in your home is a good solution) and storage volume (2TB is a suitable option).
         </p>
 
 

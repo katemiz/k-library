@@ -58,6 +58,15 @@ class AssetController extends Controller
             ->toArray();
     }
 
+    public function stats(Request $req)
+    {
+        return view('dashboard', [
+            'asset_count' => Asset::where('user_id', '=', Auth::id())->count(),
+            'photo_count' => Photo::where('user_id', '=', Auth::id())->count(),
+            'pdf_count' => Pdf::where('user_id', '=', Auth::id())->count(),
+        ]);
+    }
+
     public function store(Request $req)
     {
         $assetdata['owner_id'] = Auth::id();
@@ -169,7 +178,14 @@ class AssetController extends Controller
             $asset->attachments = $asset->photos->merge($asset->pdfs);
         }
 
-        return view('asset.form', ['asset' => $asset]);
+        return view('asset.form', ['asset' => $asset, 'addfilesonly' => false]);
+    }
+
+    public function addfilesform(Request $request)
+    {
+        $asset = false;
+
+        return view('asset.form', ['asset' => $asset, 'addfilesonly' => true]);
     }
 
     public function show(Request $request)
