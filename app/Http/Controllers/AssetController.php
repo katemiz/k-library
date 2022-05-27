@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 use App\Models\Asset;
 use App\Models\Photo;
 use App\Models\Pdf;
+use App\Models\Music;
+use App\Models\Video;
+use App\Models\Other;
 
 use Image;
 use Carbon\Carbon;
@@ -64,6 +67,9 @@ class AssetController extends Controller
             'asset_count' => Asset::where('user_id', '=', Auth::id())->count(),
             'photo_count' => Photo::where('user_id', '=', Auth::id())->count(),
             'pdf_count' => Pdf::where('user_id', '=', Auth::id())->count(),
+            'music_count' => Music::where('user_id', '=', Auth::id())->count(),
+            'video_count' => Video::where('user_id', '=', Auth::id())->count(),
+            'other_count' => Other::where('user_id', '=', Auth::id())->count(),
         ]);
     }
 
@@ -77,6 +83,22 @@ class AssetController extends Controller
         $new_asset = Asset::create($assetdata);
 
         $this->addFiles($req, $new_asset->id);
+
+        return redirect()->route('view', ['id' => $new_asset->id]);
+    }
+
+    public function storefiles(Request $req)
+    {
+        // $assetdata['owner_id'] = Auth::id();
+        // $assetdata['user_id'] = Auth::id();
+        // $assetdata['title'] = $req->title;
+        // $assetdata['notes'] = $req->editor_data;
+
+        //$new_asset = Asset::create($assetdata);
+
+        $this->addFiles($req, 0);
+
+        dd('done');
 
         return redirect()->route('view', ['id' => $new_asset->id]);
     }
@@ -98,7 +120,12 @@ class AssetController extends Controller
     {
         if ($req->has('assets')) {
             foreach ($req->file('assets') as $dosya) {
-                $filename = '/usr' . Auth::id() . '/' . $dosya->getMimeType();
+                if (strlen($dosya->getMimeType()) > 32) {
+                    $filename = '/usr' . Auth::id() . '/file/other';
+                } else {
+                    $filename =
+                        '/usr' . Auth::id() . '/' . $dosya->getMimeType();
+                }
 
                 $yenidosya = Storage::disk('local')->put($filename, $dosya);
 
@@ -121,10 +148,30 @@ class AssetController extends Controller
                         Photo::create($dosya_data);
                         break;
 
+                    // MUSIC
+                    case 'audio/ogg':
+                    case 'audio/webm':
+                    case 'audio/mpeg':
+                    case 'audio/mpeg':
+                    case 'audio/webm':
+                        Music::create($dosya_data);
+                        break;
+
+                    // VIDEO
+                    case 'video/ogg':
+                    case 'video/mp4':
+                    case 'video/mpeg':
+                        Video::create($dosya_data);
+                        break;
+
                     // BOOK
-                    default:
                     case 'application/pdf':
                         Pdf::create($dosya_data);
+                        break;
+
+                    // OTHER
+                    default:
+                        Other::create($dosya_data);
                         break;
                 }
             }

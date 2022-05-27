@@ -1,7 +1,7 @@
 <div class="section container">
 
     <header class="mt-6">
-        <h1 class="title is-size-1 has-text-weight-light">My Assets</h1>
+        <h1 class="title is-size-1 has-text-weight-light">My Assets :{{$type}}</h1>
     </header>
 
 {{--     <figure class="image is-16by9">
@@ -57,92 +57,149 @@
 
 
     <div>
-        @if ($assets->total() > 0)
-
-            <!-- ************************ -->
-            <!-- TABLE                    -->
-            <!-- ************************ -->
-            <table class="table is-fullwidth">
-
-                <caption><b>{{ $assets->total() }}</b> Result{{ $assets->total() > 1 ? 's':'' }}</caption>
-
-                <thead>
-                <tr>
-                    <th>
-                        <span class="icon-text" wire:click="sortBy('title')">
-                            <span class="icon {{ $sortDirection === 'asc' ? 'is-hidden' : ''}}">
-                                <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
-                            </span>
-                            <span class="icon {{ $sortDirection === 'desc' ? 'is-hidden' : ''}}">
-                                <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
-                            </span>
-                            <span>Title</span>
-                        </span>
-                    </th>
-
-                    <th class="is-2">Notes/Remarks</th>
-
-                    <th class="is-2">
-                        <span class="icon-text" wire:click="sortBy('created_at')">
-                            <span class="icon {{ $sortTimeDirection === 'asc' ? 'is-hidden' : ''}}">
-                                <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
-                            </span>
-                            <span class="icon {{ $sortTimeDirection === 'desc' ? 'is-hidden' : ''}}">
-                                <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
-                            </span>
-                            <span>Created At</span>
-                        </span>
-                    </th>
-
-                    <th class="has-text-right is-2">Actions</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach ($assets as $item)
-                    <tr>
-                        <td>
-                            <a href="/assets-view/{{ $item->id }}">
-                                {{$item->title}}
-                            </a>
-                        </td>
-
-                        <td>{!! $item->notes !!}</td>
 
 
-                        <td>{{$item->created_at}}</td>
+        @switch($type)
+            @case('assets')
 
-                        <td class="has-text-right">
+                @if ($items->total() > 0)
 
-                            <a href="/assets-view/{{ $item->id }}" class="icon">
-                                <x-icon icon="eye" fill="{{config('constants.icons.color.active')}}"/>
-                            </a>
+                    <!-- ************************ -->
+                    <!-- TABLE                    -->
+                    <!-- ************************ -->
+                    <table class="table is-fullwidth">
 
-                            <a href="/assets-form/{{ $item->id }}" class="icon">
-                                <x-icon icon="edit" fill="{{config('constants.icons.color.active')}}"/>
-                            </a>
+                        <caption><b>{{ $items->total() }}</b> Result{{ $items->total() > 1 ? 's':'' }}</caption>
 
-                        </td>
-                    </tr>
+                        <thead>
+                        <tr>
+                            <th>
+                                <span class="icon-text" wire:click="sortBy('title')">
+                                    <span class="icon {{ $sortDirection === 'asc' ? 'is-hidden' : ''}}">
+                                        <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
+                                    </span>
+                                    <span class="icon {{ $sortDirection === 'desc' ? 'is-hidden' : ''}}">
+                                        <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
+                                    </span>
+                                    <span>Title</span>
+                                </span>
+                            </th>
 
-                    @endforeach
+                            <th class="is-2">Notes/Remarks</th>
 
-                </tbody>
+                            <th class="is-2">
+                                <span class="icon-text" wire:click="sortBy('created_at')">
+                                    <span class="icon {{ $sortTimeDirection === 'asc' ? 'is-hidden' : ''}}">
+                                        <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
+                                    </span>
+                                    <span class="icon {{ $sortTimeDirection === 'desc' ? 'is-hidden' : ''}}">
+                                        <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
+                                    </span>
+                                    <span>Created At</span>
+                                </span>
+                            </th>
 
-            </table>
+                            <th class="has-text-right is-2">Actions</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach ($items as $item)
+                            <tr>
+                                <td>
+                                    <a href="/assets-view/{{ $item->id }}">
+                                        {{$item->title}}
+                                    </a>
+                                </td>
+
+                                <td>{!! $item->notes !!}</td>
+
+
+                                <td>{{$item->created_at}}</td>
+
+                                <td class="has-text-right">
+
+                                    <a href="/assets-view/{{ $item->id }}" class="icon">
+                                        <x-icon icon="eye" fill="{{config('constants.icons.color.active')}}"/>
+                                    </a>
+
+                                    <a href="/assets-form/{{ $item->id }}" class="icon">
+                                        <x-icon icon="edit" fill="{{config('constants.icons.color.active')}}"/>
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                @else
+
+                    <!-- ************************ -->
+                    <!-- NO ITEM IN DB            -->
+                    <!-- ************************ -->
+                    <div class="notification is-warning is-light">No data in system yet!</div>
+
+                @endif
+
+                @break
+
+
+            @case('photos')
+
+                @if ($items->total() > 0)
+
+                    <!-- ************************ -->
+                    <!-- TABLE                    -->
+                    <!-- ************************ -->
+                    <table class="table is-fullwidth">
+
+                        <caption><b>{{ $items->total() }}</b> Result{{ $items->total() > 1 ? 's':'' }}</caption>
+
+                        <tbody>
+
+                            @foreach ($items as $k => $item)
+
+                            @if ($k == 0 || $k%5 == 0)
+                            <tr>
+                            @endif
+                                <td>
+                                    <a href="/assets-view/{{ $item->id }}">
+                                        {{$item->datetaken ? $item->datetaken : $item->created_at}}
+                                    </a>
+                                </td>
+                            @if ($k >0 && $k%5 == 0)
+                            </tr>
+                            @endif
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                @else
+
+                    <!-- ************************ -->
+                    <!-- NO ITEM IN DB            -->
+                    <!-- ************************ -->
+                    <div class="notification is-warning is-light">No data in system yet!</div>
+
+                @endif
+
+                @break
+
+            @default
+
+        @endswitch
 
 
 
-        @else
 
-            <!-- ************************ -->
-            <!-- NO ITEM IN DB            -->
-            <!-- ************************ -->
-            <div class="notification is-warning is-light">No data in system yet!</div>
-
-        @endif
     </div>
-    {{ $assets->links() }}
+    {{ $items->links() }}
 
 </div>

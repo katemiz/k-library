@@ -26,12 +26,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/* Route::get('/dashboard', function () {
-    return view('dashboard');
-})
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard'); */
-
 Route::get('/dashboard', [AssetController::class, 'stats'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -49,11 +43,12 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('auth');
 
     // LIBRARY ASSET
-    Route::get('/assets-list', AssetsTable::class)->name('myassets');
+    Route::get('/assets-list/{type}', AssetsTable::class);
     Route::get('/assets-view/{id}', AssetsView::class)->name('view');
 
     Route::get('assets-form', [AssetController::class, 'forms']);
     Route::get('assets-addfiles', [AssetController::class, 'addfilesform']);
+    Route::post('assets-storefiles', [AssetController::class, 'storefiles']);
 
     Route::get('assets-form/{id}', [AssetController::class, 'forms']);
     Route::post('assets-add', [AssetController::class, 'store']);

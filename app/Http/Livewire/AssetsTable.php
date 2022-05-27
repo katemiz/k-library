@@ -58,30 +58,148 @@ class AssetsTable extends Component
             ];
         }
 
-        $q = Asset::query()
-            ->orderBy($this->sortTimeField, $this->sortTimeDirection)
-            ->orderBy($this->sortField, $this->sortDirection);
+        switch ($request->type) {
+            // ASSETS
+            default:
+            case 'assets':
+                $q = Asset::query()
+                    ->orderBy($this->sortTimeField, $this->sortTimeDirection)
+                    ->orderBy($this->sortField, $this->sortDirection);
 
-        $q->where('user_id', '=', Auth::id());
+                $q->where('user_id', '=', Auth::id());
 
-        $q->when(!empty($this->search), function ($sql) {
-            return $sql
-                ->where('title', 'like', '%' . $this->search . '%')
-                ->orWhere(function ($query) {
-                    $query->orWhere('notes', 'like', '%' . $this->search . '%');
+                $q->when(!empty($this->search), function ($sql) {
+                    return $sql
+                        ->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere(function ($query) {
+                            $query->orWhere(
+                                'notes',
+                                'like',
+                                '%' . $this->search . '%'
+                            );
+                        });
                 });
-        });
 
-        // $this->assets = $q
-        //     ->paginate(Config::get('constants.table.no_of_results'))
-        //     ->toArray();
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+                break;
 
-        $assets = $q->paginate(Config::get('constants.table.no_of_results'));
+            // PHOTOS
+            case 'photos':
+                $q = Photo::query()->orderBy(
+                    $this->sortTimeField,
+                    $this->sortTimeDirection
+                );
+
+                $q->where('user_id', '=', Auth::id());
+
+                /*                 if (count($asset->photos) > 0) {
+                    foreach ($asset->photos as $p) {
+                        $files[$p->id] = Image::make(Storage::path($p->stored_as))
+                            ->fit(300, 320)
+                            ->encode('data-url');
+                    }
+                } */
+
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+
+                //dd($items);
+
+                break;
+
+            // PDFS
+            case 'pdfs':
+                $q = Pdf::query()
+                    ->orderBy($this->sortTimeField, $this->sortTimeDirection)
+                    ->orderBy($this->sortField, $this->sortDirection);
+
+                $q->where('user_id', '=', Auth::id());
+
+                $q->when(!empty($this->search), function ($sql) {
+                    return $sql->where(
+                        'org_name',
+                        'like',
+                        '%' . $this->search . '%'
+                    );
+                });
+
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+                break;
+
+            // MUSIC
+            case 'music':
+                $q = Music::query()
+                    ->orderBy($this->sortTimeField, $this->sortTimeDirection)
+                    ->orderBy($this->sortField, $this->sortDirection);
+
+                $q->where('user_id', '=', Auth::id());
+
+                $q->when(!empty($this->search), function ($sql) {
+                    return $sql->where(
+                        'org_name',
+                        'like',
+                        '%' . $this->search . '%'
+                    );
+                });
+
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+                break;
+
+            // VIDEO
+            case 'videos':
+                $q = Video::query()
+                    ->orderBy($this->sortTimeField, $this->sortTimeDirection)
+                    ->orderBy($this->sortField, $this->sortDirection);
+
+                $q->where('user_id', '=', Auth::id());
+
+                $q->when(!empty($this->search), function ($sql) {
+                    return $sql->where(
+                        'org_name',
+                        'like',
+                        '%' . $this->search . '%'
+                    );
+                });
+
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+                break;
+
+            // OTHER
+            case 'others':
+                $q = Other::query()
+                    ->orderBy($this->sortTimeField, $this->sortTimeDirection)
+                    ->orderBy($this->sortField, $this->sortDirection);
+
+                $q->where('user_id', '=', Auth::id());
+
+                $q->when(!empty($this->search), function ($sql) {
+                    return $sql->where(
+                        'org_name',
+                        'like',
+                        '%' . $this->search . '%'
+                    );
+                });
+
+                $items = $q->paginate(
+                    Config::get('constants.table.no_of_results')
+                );
+                break;
+        }
 
         $this->count = $q->count();
 
         return view('livewire.assets-table', [
-            'assets' => $assets,
+            'type' => $request->type,
+            'items' => $items,
             'notification' => $this->notification,
         ]);
     }
@@ -90,13 +208,6 @@ class AssetsTable extends Component
     {
         $this->search = '';
         $this->resetPage();
-        /*         $this->search = '';
-
-        $this->sortField = 'title';
-        $this->sortDirection = 'asc';
-
-        $this->sortTimeField = 'created_at';
-        $this->sortTimeDirection = 'asc'; */
     }
 
     public function updatingSearch()

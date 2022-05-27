@@ -6,7 +6,8 @@
         <img src="{{ asset('/images/app_header_logo.svg') }}" alt="{{ config('constants.app.app_header_logo') }}">
       </a>
 
-      <a  href="/" class="navbar-item has-text-white">
+      {{-- <a  href="/" class="navbar-item has-text-white"> --}}
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar_ana">
         <span aria-hidden="true" />
         <span aria-hidden="true" />
         <span aria-hidden="true" />
@@ -27,7 +28,7 @@
             </a>
 
 
-            <a href="{{route('myassets')}}" class="navbar-item">
+            <a href="/assets-list/assets" class="navbar-item">
                 <span class="icon">
                     <x-icon icon="bag" fill="{{config('constants.icons.color.active')}}"/>
                 </span>

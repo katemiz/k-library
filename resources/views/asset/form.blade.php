@@ -125,7 +125,12 @@
 
         <div class="column box mt-6">
 
+            @if ($addfilesonly)
+            <form action="{{ '/assets-storefiles' }}" method="{{ $asset ? 'POST' : 'POST' }}" enctype="multipart/form-data">
+            @else
             <form action="{{ $asset ? '/assets-update/'.$asset->id : '/assets-add' }}" method="{{ $asset ? 'POST' : 'POST' }}" enctype="multipart/form-data">
+            @endif
+
             @csrf
 
             <input type="hidden" id="id" value="{{ $asset ? $asset->id : false }}" autocomplete="off">

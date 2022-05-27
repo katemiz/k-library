@@ -24,7 +24,6 @@ class AssetsView extends Component
     public $isImgModalVisible = false;
     public $photo_data = '';
     public $notification = false;
-
     public $icerik = '';
 
     public function render(Request $request)

@@ -36,6 +36,7 @@ return [
 
     'table' => [
         'no_of_results' => 6,
+        'no_of_thumbnails' => 20,
     ],
 
     'asset_types' => [

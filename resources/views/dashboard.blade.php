@@ -19,80 +19,41 @@
 
             <div class="column">
 
+                <table class="table is-fullwidth">
+                    <tr>
+                        <td class="has-text-centered">
+                            <p class="heading">Assets</p>
+                            <p class="title">{{$asset_count}}</p>
+                        </td>
 
-                <nav class="level">
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Assets</p>
-                    <p class="title">{{$asset_count}}</p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Photos</p>
-                    <p class="title">{{$photo_count}}</p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Pdfs</p>
-                    <p class="title">{{$pdf_count}}</p>
-                  </div>
-                </div>
+                        <td class="has-text-centered">
+                            <p class="heading">Photo</p>
+                            <p class="title"><a href="/assets-list/photos">{{$photo_count}}</a></p>
+                        </td>
 
-              </nav>
+                        <td class="has-text-centered">
+                            <p class="heading">Pdf</p>
+                            <p class="title">{{$pdf_count}}</p>
+                        </td>
+                    </tr>
 
-              <nav class="level">
+                    <tr>
+                        <td class="has-text-centered">
+                            <p class="heading">Music</p>
+                            <p class="title">{{$music_count}}</p>
+                        </td>
 
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Music</p>
-                    <p class="title">789</p>
-                  </div>
-                </div>
+                        <td class="has-text-centered">
+                            <p class="heading">Video</p>
+                            <p class="title">{{$video_count}}</p>
+                        </td>
 
-                <div class="level-item has-text-centered">
-                    <div>
-                      <p class="heading">Video</p>
-                      <p class="title">789</p>
-                    </div>
-                  </div>
-
-                  <div class="level-item has-text-centered">
-                    <div>
-                      <p class="heading">Others</p>
-                      <p class="title">789</p>
-                    </div>
-                  </div>
-              </nav>
-
-
-              <nav class="level">
-
-                <div class="level-item has-text-centered">
-                  <div>
-                    <p class="heading">Music</p>
-                    <p class="title">789</p>
-                  </div>
-                </div>
-
-                <div class="level-item has-text-centered">
-                    <div>
-                      <p class="heading">Video</p>
-                      <p class="title">789</p>
-                    </div>
-                  </div>
-
-                  <div class="level-item has-text-centered">
-                    <div>
-                      <p class="heading">Others</p>
-                      <p class="title">789</p>
-                    </div>
-                  </div>
-              </nav>
-
-
-
+                        <td class="has-text-centered">
+                            <p class="heading">Other</p>
+                            <p class="title">{{$other_count}}</p>
+                        </td>
+                    </tr>
+                </table>
 
             </div>
 
