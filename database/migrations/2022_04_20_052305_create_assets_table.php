@@ -16,18 +16,13 @@ return new class extends Migration {
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-
             $table->integer('owner_id');
-
             $table->foreignIdFor(User::class);
-
-            //$table->text('asset_type');
+            $table->boolean('is_fake')->default(false);
             $table->string('title')->nullable();
             $table->string('notes')->nullable();
-
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
-
             $table->timestamps();
         });
     }

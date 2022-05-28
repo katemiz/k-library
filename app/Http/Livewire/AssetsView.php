@@ -36,7 +36,7 @@ class AssetsView extends Component
             return false;
         }
 
-        $files = [];
+        /*         $files = [];
 
         if (count($asset->photos) > 0) {
             foreach ($asset->photos as $p) {
@@ -46,7 +46,7 @@ class AssetsView extends Component
             }
         }
 
-        $asset->dosyalar = $files;
+        $asset->dosyalar = $files; */
 
         return view('livewire.view', [
             'asset' => $asset,
@@ -106,7 +106,7 @@ class AssetsView extends Component
 
         $asset->delete();
 
-        return redirect()->route('myassets', ['m' => 'delete']);
+        return redirect('/assets-list/assets', ['m' => 'delete']);
     }
 
     public function deletePhoto(Request $request, $assetId, $photoId)

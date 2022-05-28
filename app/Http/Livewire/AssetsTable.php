@@ -6,6 +6,7 @@ use Livewire\Component;
 
 use App\Models\Asset;
 use App\Models\Photo;
+use App\Models\Music;
 
 use Illuminate\Http\Request;
 
@@ -103,7 +104,7 @@ class AssetsTable extends Component
                 } */
 
                 $items = $q->paginate(
-                    Config::get('constants.table.no_of_results')
+                    Config::get('constants.table.thumbnails')
                 );
 
                 //dd($items);
@@ -135,7 +136,7 @@ class AssetsTable extends Component
             case 'music':
                 $q = Music::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
-                    ->orderBy($this->sortField, $this->sortDirection);
+                    ->orderBy('org_name', $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
 
@@ -201,6 +202,7 @@ class AssetsTable extends Component
             'type' => $request->type,
             'items' => $items,
             'notification' => $this->notification,
+            'cols_per_row' => Config::get('constants.table.cols_per_row'),
         ]);
     }
 

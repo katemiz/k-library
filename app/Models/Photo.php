@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+use Illuminate\Support\Facades\Storage;
+
+use Carbon\Carbon;
+
+use Image;
+
 
 class Photo extends Model
 {
@@ -90,16 +98,42 @@ class Photo extends Model
         return floatval($parts[0]) / floatval($parts[1]);
     }
 
-    /*     public function showProfilePicture($path)
-    {
-        $profile_path = storage_path(
-            'app/public/images/profile/' . $user_id . '/' . $filename
-        );
 
-        if (Auth::user()->id == $user_id) {
-            return response()->file($profile_path);
-        } else {
-            abort(404);
-        }
-    } */
+
+    protected function createDateCarbon(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse(
+                $this->created_at
+            )->diffForHumans(),
+        );
+    }
+
+
+    protected function thumbnail(): Attribute
+    {
+        return Attribute::make(
+            get: fn () =>
+                Image::make(Storage::path($this->stored_as))
+                    ->fit(150, 160)
+                    ->encode('data-url'),
+        );
+    }
+
+
+    protected function preview(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) =>
+                Image::make(Storage::path($this->stored_as))
+                    ->fit(300, 320)
+                    ->encode('data-url'),
+        );
+    }
+
+
+
+
+
+
 }

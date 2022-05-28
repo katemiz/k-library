@@ -35,6 +35,7 @@ return [
     ],
 
     'table' => [
+        'cols_per_row' => 5,
         'no_of_results' => 6,
         'no_of_thumbnails' => 20,
     ],

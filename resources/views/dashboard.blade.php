@@ -23,7 +23,7 @@
                     <tr>
                         <td class="has-text-centered">
                             <p class="heading">Assets</p>
-                            <p class="title">{{$asset_count}}</p>
+                            <p class="title"><a href="/assets-list/assets">{{$asset_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
@@ -33,24 +33,24 @@
 
                         <td class="has-text-centered">
                             <p class="heading">Pdf</p>
-                            <p class="title">{{$pdf_count}}</p>
+                            <p class="title"><a href="/assets-list/pfs">{{$pdf_count}}</a></p>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="has-text-centered">
                             <p class="heading">Music</p>
-                            <p class="title">{{$music_count}}</p>
+                            <p class="title"><a href="/assets-list/music">{{$music_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Video</p>
-                            <p class="title">{{$video_count}}</p>
+                            <p class="title"><a href="/assets-list/video">{{$video_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Other</p>
-                            <p class="title">{{$other_count}}</p>
+                            <p class="title"><a href="/assets-list/other">{{$other_count}}</a></p>
                         </td>
                     </tr>
                 </table>

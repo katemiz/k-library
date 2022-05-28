@@ -164,15 +164,21 @@
 
                             @foreach ($items as $k => $item)
 
-                            @if ($k == 0 || $k%5 == 0)
+                            @if ($k == 0 || $k%$cols_per_row == 0)
                             <tr>
                             @endif
                                 <td>
+                                    {{ $item->deneme }}
+                                    <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
+                                        <img src="{{ $item->thumbnail }}">
+                                    </figure>
+
+
                                     <a href="/assets-view/{{ $item->id }}">
-                                        {{$item->datetaken ? $item->datetaken : $item->created_at}}
+                                        {{$item->datetaken ? $item->datetaken : $item->created_at.'-NO'}}
                                     </a>
                                 </td>
-                            @if ($k >0 && $k%5 == 0)
+                            @if ($k >0 && $k%$cols_per_row == $cols_per_row)
                             </tr>
                             @endif
                             @endforeach
@@ -191,6 +197,65 @@
                 @endif
 
                 @break
+
+
+
+
+            @case('music')
+
+                @if ($items->total() > 0)
+
+                    <!-- ************************ -->
+                    <!-- TABLE                    -->
+                    <!-- ************************ -->
+                    <table class="table is-fullwidth">
+
+                        <caption><b>{{ $items->total() }}</b> Result{{ $items->total() > 1 ? 's':'' }}</caption>
+
+                        <tbody>
+
+                            @foreach ($items as $k => $item)
+
+                            @if ($k == 0 || $k%$cols_per_row == 0)
+                            <tr>
+                            @endif
+                                <td>
+                                    {{ $item->deneme }}
+                                    <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
+                                        <img src="{{ $item->thumbnail }}">
+                                    </figure>
+
+
+                                    <a href="/assets-view/{{ $item->id }}">
+                                        {{$item->datetaken ? $item->datetaken : $item->created_at.'-NO'}}
+                                    </a>
+                                </td>
+                            @if ($k >0 && $k%$cols_per_row == $cols_per_row)
+                            </tr>
+                            @endif
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                @else
+
+                    <!-- ************************ -->
+                    <!-- NO ITEM IN DB            -->
+                    <!-- ************************ -->
+                    <div class="notification is-warning is-light">No data in system yet!</div>
+
+                @endif
+
+                @break
+
+
+
+
+
+
+
 
             @default
 

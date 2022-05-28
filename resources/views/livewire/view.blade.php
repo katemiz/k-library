@@ -64,16 +64,21 @@
         <!-- Left side -->
         <div class="level-left">
             <header class="mt-6">
-                <h1 class="title is-size-1 has-text-weight-light">Asset</h1>
+                <h1 class="title is-size-1 has-text-weight-light">{{ !$asset->is_fake ? 'Asset' : 'Added Files' }}</h1>
+                @if (!$asset->is_fake)
                 <h1 class="subtitle">{{ $asset->title }}</h1>
+                @endif
             </header>
         </div>
 
+        @if (!$asset->is_fake)
         <!-- Right side -->
         <div class="level-right">
             <a href="/assets-form/{{ $asset->id }}" class="button is-link mr-2">Edit</a>
             <button onclick="confirmDelete('{{ $asset->id }}',false)" class="button is-danger is-outlined">Delete</button>
         </div>
+        @endif
+
     </nav>
 
     @if ($asset->notes)
@@ -98,7 +103,10 @@
 
                     <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$photo->id}}')">
                         <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
-                            <img src="{{ $asset->dosyalar[$photo->id] }}">
+
+                            <img src="{{ $photo->thumbnail }}">
+
+
                         </figure>
                     </div>
 
@@ -123,6 +131,33 @@
 
     </div>
     @endif
+
+
+    {{-- MUSIC  --}}
+    @if (count($asset->music) > 0)
+    <div class="box">
+        <p class="menu-label">AUDIO/MUSIC FILES </p>
+        <ul>
+            @foreach ($asset->music as $music )
+            <li>
+                <span class="icon-text">
+                <span class="icon">
+                    <x-icon icon="attach" fill="{{config('constants.icons.color.dark')}}"/>
+                </span>
+                <span><a href="/view-pdf/{{$music->id}}">{{$music->org_name}}</a> - {{$music->size}}</span>
+                </span>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+
+
+
+
+
+
 
     {{-- PDFS  --}}
     @if (count($asset->pdfs) > 0)

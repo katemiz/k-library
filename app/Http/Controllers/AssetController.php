@@ -31,6 +31,7 @@ class AssetController extends Controller
     ];
 
     public $active_sortcolumn = 'title';
+    public $addedfiles = [];
 
     public function getAssets($request)
     {
@@ -89,16 +90,14 @@ class AssetController extends Controller
 
     public function storefiles(Request $req)
     {
-        // $assetdata['owner_id'] = Auth::id();
-        // $assetdata['user_id'] = Auth::id();
-        // $assetdata['title'] = $req->title;
-        // $assetdata['notes'] = $req->editor_data;
+        $assetdata['owner_id'] = Auth::id();
+        $assetdata['user_id'] = Auth::id();
+        $assetdata['is_fake'] = true;
+        $assetdata['title'] = 'Container fake asset';
+        $assetdata['notes'] = '';
 
-        //$new_asset = Asset::create($assetdata);
-
-        $this->addFiles($req, 0);
-
-        dd('done');
+        $new_asset = Asset::create($assetdata);
+        $this->addFiles($req, $new_asset->id);
 
         return redirect()->route('view', ['id' => $new_asset->id]);
     }
@@ -145,33 +144,37 @@ class AssetController extends Controller
                     case 'image/gif':
                         $exif_data = Photo::exif(Storage::path($yenidosya));
                         $dosya_data = array_merge($dosya_data, $exif_data);
-                        Photo::create($dosya_data);
+                        $newfile = Photo::create($dosya_data);
+                        $this->addedfiles['photo'][] = $newfile->id;
                         break;
 
                     // MUSIC
                     case 'audio/ogg':
                     case 'audio/webm':
                     case 'audio/mpeg':
-                    case 'audio/mpeg':
                     case 'audio/webm':
-                        Music::create($dosya_data);
+                        $newfile = Music::create($dosya_data);
+                        $this->addedfiles['music'][] = $newfile->id;
                         break;
 
                     // VIDEO
                     case 'video/ogg':
                     case 'video/mp4':
                     case 'video/mpeg':
-                        Video::create($dosya_data);
+                        $newfile = Video::create($dosya_data);
+                        $this->addedfiles['video'][] = $newfile->id;
                         break;
 
                     // BOOK
                     case 'application/pdf':
-                        Pdf::create($dosya_data);
+                        $newfile = Pdf::create($dosya_data);
+                        $this->addedfiles['pdf'][] = $newfile->id;
                         break;
 
                     // OTHER
                     default:
-                        Other::create($dosya_data);
+                        $newfile = Other::create($dosya_data);
+                        $this->addedfiles['other'][] = $newfile->id;
                         break;
                 }
             }
