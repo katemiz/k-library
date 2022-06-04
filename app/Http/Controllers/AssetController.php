@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Asset;
 use App\Models\Photo;
@@ -65,12 +66,15 @@ class AssetController extends Controller
     public function stats(Request $req)
     {
         return view('dashboard', [
-            'asset_count' => Asset::where('user_id', '=', Auth::id())->count(),
-            'photo_count' => Photo::where('user_id', '=', Auth::id())->count(),
-            'pdf_count' => Pdf::where('user_id', '=', Auth::id())->count(),
-            'music_count' => Music::where('user_id', '=', Auth::id())->count(),
+            'assets_count' => Asset::where([
+                ['user_id', '=', Auth::id()],
+                ['is_fake', '=', 0],
+            ])->count(),
+            'images_count' => Photo::where('user_id', '=', Auth::id())->count(),
+            'docs_count' => Pdf::where('user_id', '=', Auth::id())->count(),
+            'audio_count' => Music::where('user_id', '=', Auth::id())->count(),
             'video_count' => Video::where('user_id', '=', Auth::id())->count(),
-            'other_count' => Other::where('user_id', '=', Auth::id())->count(),
+            'others_count' => Other::where('user_id', '=', Auth::id())->count(),
         ]);
     }
 
@@ -137,6 +141,8 @@ class AssetController extends Controller
                     'mimetype' => $dosya->getMimeType(),
                 ];
 
+                Log::info('$dosya->getMimeType() = ' . $dosya->getMimeType());
+
                 switch ($dosya->getMimeType()) {
                     // PHOTO
                     case 'image/jpeg':
@@ -161,6 +167,10 @@ class AssetController extends Controller
                     case 'video/ogg':
                     case 'video/mp4':
                     case 'video/mpeg':
+                    case 'video/x-ms-asf':
+                    case 'video/x-msvideo':
+                    case 'video/quicktime':
+                    case 'video/webm':
                         $newfile = Video::create($dosya_data);
                         $this->addedfiles['video'][] = $newfile->id;
                         break;
@@ -225,7 +235,7 @@ class AssetController extends Controller
 
         if ($request->id) {
             $asset = Asset::find($request->id);
-            $asset->attachments = $asset->photos->merge($asset->pdfs);
+            $asset->attachments = $asset->images->merge($asset->docs);
         }
 
         return view('asset.form', ['asset' => $asset, 'addfilesonly' => false]);

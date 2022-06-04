@@ -7,6 +7,9 @@ use Livewire\Component;
 use App\Models\Asset;
 use App\Models\Photo;
 use App\Models\Music;
+use App\Models\Pdf;
+use App\Models\Video;
+use App\Models\Other;
 
 use Illuminate\Http\Request;
 
@@ -21,9 +24,7 @@ class AssetsTable extends Component
 
     public $search = '';
     public $count;
-
     public $notification = false;
-    //public $assets = [];
 
     public $sortField = 'title';
     public $sortDirection = 'asc';
@@ -68,26 +69,20 @@ class AssetsTable extends Component
                     ->orderBy($this->sortField, $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
+                $q->where('is_fake', '=', 0);
 
-                $q->when(!empty($this->search), function ($sql) {
-                    return $sql
-                        ->where('title', 'like', '%' . $this->search . '%')
-                        ->orWhere(function ($query) {
-                            $query->orWhere(
-                                'notes',
-                                'like',
-                                '%' . $this->search . '%'
-                            );
-                        });
-                });
+                if (strlen($this->search) > 0) {
+                    $q->where('title', 'like', '%' . $this->search . '%');
+                    $q->orwhere('notes', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
                 );
                 break;
 
-            // PHOTOS
-            case 'photos':
+            // IMAGES
+            case 'images':
                 $q = Photo::query()->orderBy(
                     $this->sortTimeField,
                     $this->sortTimeDirection
@@ -95,79 +90,63 @@ class AssetsTable extends Component
 
                 $q->where('user_id', '=', Auth::id());
 
-                /*                 if (count($asset->photos) > 0) {
-                    foreach ($asset->photos as $p) {
-                        $files[$p->id] = Image::make(Storage::path($p->stored_as))
-                            ->fit(300, 320)
-                            ->encode('data-url');
-                    }
-                } */
+                if (strlen($this->search) > 0) {
+                    $q->where('org_name', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.thumbnails')
                 );
 
-                //dd($items);
-
                 break;
 
-            // PDFS
-            case 'pdfs':
+            // DOCS
+            case 'docs':
                 $q = Pdf::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
-                    ->orderBy($this->sortField, $this->sortDirection);
+                    ->orderBy('org_name', $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
 
-                $q->when(!empty($this->search), function ($sql) {
-                    return $sql->where(
-                        'org_name',
-                        'like',
-                        '%' . $this->search . '%'
-                    );
-                });
+                if (strlen($this->search) > 0) {
+                    $q->where('org_name', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
                 );
                 break;
 
-            // MUSIC
-            case 'music':
+            // AUDIO
+            case 'audio':
                 $q = Music::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
                     ->orderBy('org_name', $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
 
-                $q->when(!empty($this->search), function ($sql) {
-                    return $sql->where(
-                        'org_name',
-                        'like',
-                        '%' . $this->search . '%'
-                    );
-                });
+                if (strlen($this->search) > 0) {
+                    $q->where('org_name', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
                 );
+
+                $request->type = 'audio';
                 break;
 
             // VIDEO
-            case 'videos':
+            case 'video':
                 $q = Video::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
-                    ->orderBy($this->sortField, $this->sortDirection);
+                    ->orderBy('org_name', $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
 
-                $q->when(!empty($this->search), function ($sql) {
-                    return $sql->where(
-                        'org_name',
-                        'like',
-                        '%' . $this->search . '%'
-                    );
-                });
+                if (strlen($this->search) > 0) {
+                    $q->where('org_name', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
@@ -178,17 +157,13 @@ class AssetsTable extends Component
             case 'others':
                 $q = Other::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
-                    ->orderBy($this->sortField, $this->sortDirection);
+                    ->orderBy('org_name', $this->sortDirection);
 
                 $q->where('user_id', '=', Auth::id());
 
-                $q->when(!empty($this->search), function ($sql) {
-                    return $sql->where(
-                        'org_name',
-                        'like',
-                        '%' . $this->search . '%'
-                    );
-                });
+                if (strlen($this->search) > 0) {
+                    $q->where('org_name', 'like', '%' . $this->search . '%');
+                }
 
                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
@@ -206,14 +181,40 @@ class AssetsTable extends Component
         ]);
     }
 
-    public function resetFilter()
+    public function ara(Request $request, $type, $query)
+    {
+        $request->type = $type;
+        $this->search = $query;
+    }
+
+    public function resetFilter(Request $request, $type)
     {
         $this->search = '';
+        $request->type = $type;
+
         $this->resetPage();
     }
 
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function deleteAudio(Request $request, $id)
+    {
+        Music::find($id)->delete();
+        $request->type = 'audio';
+    }
+
+    public function deleteDoc(Request $request, $id)
+    {
+        Pdf::find($id)->delete();
+        $request->type = 'docs';
+    }
+
+    public function deleteOthers(Request $request, $id)
+    {
+        Other::find($id)->delete();
+        $request->type = 'others';
     }
 }

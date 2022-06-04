@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->string('org_name');
             $table->string('stored_as');
             $table->integer('size');
-            $table->string('imdb');
             $table->timestamps();
         });
     }

@@ -26,7 +26,6 @@
 
     @include('layouts.nav',["user"=>false])
 
-        {{-- @yield('content') --}}
         {{ $slot }}
 
     @include('layouts.footer')

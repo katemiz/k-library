@@ -85,41 +85,38 @@
         <div class="notification">{!! $asset->notes !!}</div>
     @endif
 
-    {{-- PHOTOS --}}
+    {{-- IMAGES --}}
     @if ($notification)
         <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>
     @endif
 
-    @if (count($asset->photos) > 0)
+    @if (count($asset->images) > 0)
     <div class="box">
 
         <p class="menu-label">IMAGE FILES </p>
 
         <div class="columns is-multiline">
 
-            @foreach ($asset->photos as $photo )
+            @foreach ($asset->images as $image )
             <div class="column is-3-desktop">
                 <div class="card">
 
-                    <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$photo->id}}')">
+                    <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$image->id}}')">
                         <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
-
-                            <img src="{{ $photo->thumbnail }}">
-
-
+                            <img src="{{ $image->thumbnail }}">
                         </figure>
                     </div>
 
                     <footer class="card-footer">
 
-                        <a onclick="showModal('m{{$photo->id}}')" class="card-footer-item">
+                        <a onclick="showModal('m{{$image->id}}')" class="card-footer-item">
                             <x-icon icon="tag" fill="{{config('constants.icons.color.active')}}"/>
                         </a>
 
-                        <a onclick="showModal('m{{$photo->id}}')" class="card-footer-item">
+                        <a onclick="showModal('m{{$image->id}}')" class="card-footer-item">
                             <x-icon icon="preview" fill="{{config('constants.icons.color.active')}}"/>
                         </a>
-                        <a onclick="confirmDelete('{{$asset->id}}','{{$photo->id}}')" class="card-footer-item">
+                        <a onclick="confirmDelete('{{$asset->id}}','{{$image->id}}')" class="card-footer-item">
                             <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
                         </a>
                     </footer>
@@ -133,12 +130,66 @@
     @endif
 
 
+
+
+    {{-- VIDEO --}}
+    @if (count($asset->video) > 0)
+    <div class="box">
+
+        <p class="menu-label">VIDEO FILES </p>
+
+        <div class="columns is-multiline">
+
+            @foreach ($asset->video as $video )
+            <div class="column is-3-desktop">
+                <div class="card">
+
+                    <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$video->id}}')">
+                        <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
+
+                            <img src="{{ $video->thumbnail }}">
+
+
+                        </figure>
+                    </div>
+
+                    <footer class="card-footer">
+
+                        <a onclick="showModal('m{{$video->id}}')" class="card-footer-item">
+                            <x-icon icon="tag" fill="{{config('constants.icons.color.active')}}"/>
+                        </a>
+
+                        <a onclick="showModal('m{{$video->id}}')" class="card-footer-item">
+                            <x-icon icon="preview" fill="{{config('constants.icons.color.active')}}"/>
+                        </a>
+                        <a onclick="confirmDelete('{{$asset->id}}','{{$video->id}}')" class="card-footer-item">
+                            <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
+                        </a>
+                    </footer>
+                </div>
+            </div>
+            @endforeach
+
+        </div>
+
+    </div>
+    @endif
+
+
+
+
+
+
+
+
+
+
     {{-- MUSIC  --}}
-    @if (count($asset->music) > 0)
+    @if (count($asset->audio) > 0)
     <div class="box">
         <p class="menu-label">AUDIO/MUSIC FILES </p>
         <ul>
-            @foreach ($asset->music as $music )
+            @foreach ($asset->audio as $music )
             <li>
                 <span class="icon-text">
                 <span class="icon">
@@ -153,18 +204,12 @@
     @endif
 
 
-
-
-
-
-
-
     {{-- PDFS  --}}
-    @if (count($asset->pdfs) > 0)
+    @if (count($asset->docs) > 0)
     <div class="box">
-        <p class="menu-label">PDF FILES </p>
+        <p class="menu-label">DOC FILES </p>
         <ul>
-            @foreach ($asset->pdfs as $pdf )
+            @foreach ($asset->docs as $pdf )
             <li>
                 <span class="icon-text">
                 <span class="icon">
@@ -194,7 +239,7 @@
 
 
     {{-- MODALS : IMAGE PROPS --}}
-    @foreach ($asset->photos as $photo )
+    @foreach ($asset->images as $photo )
         <div class="modal" id="m{{$photo->id}}">
             <div class="modal-background" onclick="closeModal('m{{$photo->id}}')"></div>
             <div class="modal-card">

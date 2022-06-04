@@ -17,12 +17,12 @@ class Asset extends Model
 
     protected $guarded = [];
 
-    public function photos()
+    public function images()
     {
         return $this->hasMany(Photo::class);
     }
 
-    public function music()
+    public function audio()
     {
         return $this->hasMany(Music::class);
     }
@@ -37,7 +37,7 @@ class Asset extends Model
         return $this->hasMany(Other::class);
     }
 
-    public function pdfs()
+    public function docs()
     {
         return $this->hasMany(Pdf::class);
     }
