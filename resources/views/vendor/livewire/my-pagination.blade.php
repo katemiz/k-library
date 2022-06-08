@@ -1,6 +1,6 @@
 <div class="my-3">
     @if ($paginator->hasPages())
-        @php(isset($this->numberOfPaginatorsRendered[$paginator->getPageName()]) ? $this->numberOfPaginatorsRendered[$paginator->getPageName()]++ : $this->numberOfPaginatorsRendered[$paginator->getPageName()] = 1)
+        @php(isset($paginator->numberOfPaginatorsRendered[$paginator->getPageName()]) ? $paginator->numberOfPaginatorsRendered[$paginator->getPageName()]++ : $paginator->numberOfPaginatorsRendered[$paginator->getPageName()] = 1)
 
         <nav role="navigation" aria-label="Pagination Navigation" class="pagination">
             <div class="has-background-danger is-hidden">
@@ -65,7 +65,7 @@
                             {{-- Array Of Links --}}
                             @if (is_array($element))
                                 @foreach ($element as $page => $url)
-                                    <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
+                                    <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $paginator->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
                                         @if ($page == $paginator->currentPage())
                                             <span aria-current="page">
                                                 <span class="pagination-link is-current is-small">{{ $page }}</span>

@@ -15,13 +15,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('pdfs', function (Blueprint $table) {
+        Schema::create('dosyalar', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Asset::class);
             $table->string('mimetype');
-            $table->string('org_name');
+            $table->string('filename');
             $table->string('stored_as');
+            $table->string('thumbnail')->nullable();
             $table->integer('size');
             $table->timestamps();
         });
@@ -34,6 +35,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('pdfs');
+        Schema::dropIfExists('digers');
     }
 };

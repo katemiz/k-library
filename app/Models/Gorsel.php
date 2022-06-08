@@ -2,20 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
 
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 use Image;
 
-
-class Photo extends Model
+class Gorsel extends Model
 {
     use HasFactory;
+
+    protected $table = 'gorseller';
 
     protected $guarded = [];
 
@@ -27,11 +31,19 @@ class Photo extends Model
         $edata['datetaken'] = '';
         $edata['location'] = '';
 
-        if (!in_array($edata['mimetype'], ['image/jpeg'])) {
+        if (
+            !in_array($edata['mimetype'], [
+                'image/jpg',
+                'image/jpeg',
+                'image/gif',
+            ])
+        ) {
             return $edata;
         }
 
         $exif = exif_read_data($image, 'IFD0');
+
+        // dd($exif);
 
         if ($exif === false) {
             return $edata;
@@ -40,7 +52,7 @@ class Photo extends Model
         $edata['has_exif'] = true;
         $edata['camera'] = $exif['Make'];
         $edata['datetaken'] = $exif['DateTimeOriginal'];
-        $edata['location'] = Photo::get_image_location($image);
+        $edata['location'] = Gorsel::get_image_location($image);
 
         return $edata;
     }
@@ -55,18 +67,24 @@ class Photo extends Model
             $GPSLongitude = $exif['GPS']['GPSLongitude'];
 
             $lat_degrees =
-                count($GPSLatitude) > 0 ? Photo::gps2Num($GPSLatitude[0]) : 0;
+                count($GPSLatitude) > 0 ? Gorsel::gps2Num($GPSLatitude[0]) : 0;
             $lat_minutes =
-                count($GPSLatitude) > 1 ? Photo::gps2Num($GPSLatitude[1]) : 0;
+                count($GPSLatitude) > 1 ? Gorsel::gps2Num($GPSLatitude[1]) : 0;
             $lat_seconds =
-                count($GPSLatitude) > 2 ? Photo::gps2Num($GPSLatitude[2]) : 0;
+                count($GPSLatitude) > 2 ? Gorsel::gps2Num($GPSLatitude[2]) : 0;
 
             $lon_degrees =
-                count($GPSLongitude) > 0 ? Photo::gps2Num($GPSLongitude[0]) : 0;
+                count($GPSLongitude) > 0
+                    ? Gorsel::gps2Num($GPSLongitude[0])
+                    : 0;
             $lon_minutes =
-                count($GPSLongitude) > 1 ? Photo::gps2Num($GPSLongitude[1]) : 0;
+                count($GPSLongitude) > 1
+                    ? Gorsel::gps2Num($GPSLongitude[1])
+                    : 0;
             $lon_seconds =
-                count($GPSLongitude) > 2 ? Photo::gps2Num($GPSLongitude[2]) : 0;
+                count($GPSLongitude) > 2
+                    ? Gorsel::gps2Num($GPSLongitude[2])
+                    : 0;
 
             $lat_direction =
                 ($GPSLatitudeRef == 'W' or $GPSLatitudeRef == 'S') ? -1 : 1;
@@ -100,40 +118,46 @@ class Photo extends Model
 
 
 
-    protected function createDateCarbon(): Attribute
+
+    public static function previewGorsel($imagepath)
     {
-        return Attribute::make(
-            get: fn () => Carbon::parse(
-                $this->created_at
-            )->diffForHumans(),
-        );
+
+        $gorsel = Image::make(Storage::path($imagepath));
+        $gorsel = $gorsel->orientate();
+
+        return (string) $gorsel->encode('data-url');
+
     }
 
 
+
+    public static function createThumb($imagepath)
+    {
+        $p = pathinfo($imagepath);
+
+        $thumb =
+            $p['dirname'] . '/THUMBS/' . $p['filename'] . '.' . $p['extension'];
+
+        $intImg = Image::make(Storage::path($imagepath));
+        $intImg = $intImg->orientate();
+
+        $intImg->resize(Config::get('constants.thumbnail.max_dimension'), Config::get('constants.thumbnail.max_dimension'), function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        Storage::disk('local')->put($thumb, (string) $intImg->encode());
+
+        return $thumb;
+    }
+
+    // ATTRIBUTES
     protected function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn () =>
-                Image::make(Storage::path($this->stored_as))
-                    ->fit(150, 160)
-                    ->encode('data-url'),
-        );
-    }
-
-
-    protected function preview(): Attribute
-    {
-        return Attribute::make(
             get: fn ($value, $attributes) =>
-                Image::make(Storage::path($this->stored_as))
-                    ->fit(300, 320)
+                Image::make(Storage::path($value))
                     ->encode('data-url'),
         );
     }
-
-
-
-
-
-
 }

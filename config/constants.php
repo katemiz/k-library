@@ -34,6 +34,10 @@ return [
         ],
     ],
 
+    'thumbnail' => [
+        'max_dimension' => 200,
+    ],
+
     'table' => [
         'cols_per_row' => 5,
         'no_of_results' => 6,

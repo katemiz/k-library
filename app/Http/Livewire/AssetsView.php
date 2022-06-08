@@ -5,8 +5,11 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 
 use App\Models\Asset;
-use App\Models\Photo;
-use App\Models\Pdf;
+use App\Models\Gorsel;
+use App\Models\Audio;
+use App\Models\Dosya;
+use App\Models\Diger;
+use App\Models\Video;
 
 use Illuminate\Http\Request;
 
@@ -15,6 +18,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+
+use Illuminate\Support\Facades\Log;
 
 use Carbon\Carbon;
 use Image;
@@ -30,23 +35,9 @@ class AssetsView extends Component
     {
         $asset = Asset::find($request->id);
 
-        $asset->carbondate = Carbon::parse($asset->created_at)->diffForHumans();
-
         if (Auth::id() !== $asset->owner_id) {
             return false;
         }
-
-        /*         $files = [];
-
-        if (count($asset->photos) > 0) {
-            foreach ($asset->photos as $p) {
-                $files[$p->id] = Image::make(Storage::path($p->stored_as))
-                    ->fit(300, 320)
-                    ->encode('data-url');
-            }
-        }
-
-        $asset->dosyalar = $files; */
 
         return view('livewire.view', [
             'asset' => $asset,
@@ -54,40 +45,15 @@ class AssetsView extends Component
         ]);
     }
 
-    public function showPhotoHold(Request $request, $assetId, $photoId)
-    {
-        $p = Photo::find($photoId);
-
-        $request->id = $assetId;
-        $this->isImgModalVisible = true;
-
-        if (!File::exists(Storage::path($p->stored_as))) {
-            abort(404);
-        }
-
-        $file = File::get(Storage::path($p->stored_as));
-        $type = File::mimeType(Storage::path($p->stored_as));
-
-        $response = Response::make($file, 200);
-
-        $response->header('Content-Type', $type);
-
-        $this->icerik = $response;
-
-        return $response;
-    }
-
     public function showPhoto(Request $request, $assetId, $photoId)
     {
-        $p = Photo::find($photoId);
+        $p = Gorsel::find($photoId);
 
         $request->id = $assetId; // needed for render()
 
         $this->isImgModalVisible = true;
 
-        $this->photo_data = (string) Image::make(
-            Storage::path($p->stored_as)
-        )->encode('data-url');
+        $this->photo_data = Gorsel::previewGorsel($p->stored_as);
     }
 
     public function deleteAsset(Request $request, $assetId, $photoId)
@@ -111,7 +77,7 @@ class AssetsView extends Component
 
     public function deletePhoto(Request $request, $assetId, $photoId)
     {
-        Photo::find($photoId)->delete();
+        Gorsel::find($photoId)->delete();
         $request->id = $assetId; // needed for render()
 
         $this->notification = [

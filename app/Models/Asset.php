@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Photo;
-use App\Models\Pdf;
-use App\Models\Music;
+use App\Models\Gorsel;
+use App\Models\Audio;
+use App\Models\Dosya;
+use App\Models\Document;
 use App\Models\Video;
-use App\Models\Other;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Asset extends Model
 {
@@ -19,12 +20,12 @@ class Asset extends Model
 
     public function images()
     {
-        return $this->hasMany(Photo::class);
+        return $this->hasMany(Gorsel::class);
     }
 
-    public function audio()
+    public function dosyalar()
     {
-        return $this->hasMany(Music::class);
+        return $this->hasMany(Dosya::class);
     }
 
     public function video()
@@ -32,13 +33,40 @@ class Asset extends Model
         return $this->hasMany(Video::class);
     }
 
-    public function other()
+    public function audio()
     {
-        return $this->hasMany(Other::class);
+        return $this->hasMany(Audio::class);
     }
 
     public function docs()
     {
-        return $this->hasMany(Pdf::class);
+        return $this->hasMany(Document::class);
     }
+
+    /*     protected function images(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) =>
+                Record::query()
+                    ->where([
+                        ['asset_id', '=', $this->id],
+                        ['classification', '=', 'image'],
+                    ]),
+        );
+    }
+ */
+
+    /*     protected function docs(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) =>
+                Record::query()
+                    ->where([
+                        ['asset_id', '=', $value],
+                        ['classification', '=', 'doc'],
+                    ]),
+        );
+    }
+
+ */
 }

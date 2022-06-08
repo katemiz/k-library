@@ -15,12 +15,12 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('others', function (Blueprint $table) {
+        Schema::create('audio', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Asset::class);
             $table->string('mimetype');
-            $table->string('org_name');
+            $table->string('filename');
             $table->string('stored_as');
             $table->integer('size');
             $table->timestamps();
@@ -34,6 +34,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('others');
+        Schema::dropIfExists('audios');
     }
 };

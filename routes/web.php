@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
-use App\Http\Controllers\PdfController;
+use App\Http\Controllers\FileAccessController;
 
 use App\Http\Livewire\AssetsTable;
 use App\Http\Livewire\AssetsView;
+use App\Http\Livewire\ListRecords;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,9 @@ use App\Http\Livewire\AssetsView;
 |
 */
 
-Route::get('/linkstorage', function () {
+/* Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
-});
+}); */
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,5 +58,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
     Route::get('delete/{id}', [AssetController::class, 'destroy']);
 
-    Route::get('view-pdf/{id}', [PdfController::class, 'securePdf']);
+    Route::get('/access-audio/{id}', [FileAccessController::class, 'audio']);
+    Route::get('/access-doc/{id}', [FileAccessController::class, 'docs']);
+
+    Route::get('/list-records/{type}', ListRecords::class);
 });

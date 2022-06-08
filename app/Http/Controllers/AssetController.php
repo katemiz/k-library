@@ -11,11 +11,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Asset;
-use App\Models\Photo;
-use App\Models\Pdf;
-use App\Models\Music;
+use App\Models\Gorsel;
+use App\Models\Audio;
+use App\Models\Dosya;
+use App\Models\Document;
 use App\Models\Video;
-use App\Models\Other;
 
 use Image;
 use Carbon\Carbon;
@@ -70,11 +70,21 @@ class AssetController extends Controller
                 ['user_id', '=', Auth::id()],
                 ['is_fake', '=', 0],
             ])->count(),
-            'images_count' => Photo::where('user_id', '=', Auth::id())->count(),
-            'docs_count' => Pdf::where('user_id', '=', Auth::id())->count(),
-            'audio_count' => Music::where('user_id', '=', Auth::id())->count(),
-            'video_count' => Video::where('user_id', '=', Auth::id())->count(),
-            'others_count' => Other::where('user_id', '=', Auth::id())->count(),
+            'images_count' => Gorsel::where([
+                ['user_id', '=', Auth::id()],
+            ])->count(),
+            'docs_count' => Document::where([
+                ['user_id', '=', Auth::id()],
+            ])->count(),
+            'audio_count' => Audio::where([
+                ['user_id', '=', Auth::id()],
+            ])->count(),
+            'video_count' => Video::where([
+                ['user_id', '=', Auth::id()],
+            ])->count(),
+            'others_count' => Dosya::where([
+                ['user_id', '=', Auth::id()],
+            ])->count(),
         ]);
     }
 
@@ -97,7 +107,7 @@ class AssetController extends Controller
         $assetdata['owner_id'] = Auth::id();
         $assetdata['user_id'] = Auth::id();
         $assetdata['is_fake'] = true;
-        $assetdata['title'] = 'Container fake asset';
+        $assetdata['title'] = 'Files uploaded';
         $assetdata['notes'] = '';
 
         $new_asset = Asset::create($assetdata);
@@ -130,63 +140,13 @@ class AssetController extends Controller
                         '/usr' . Auth::id() . '/' . $dosya->getMimeType();
                 }
 
-                $yenidosya = Storage::disk('local')->put($filename, $dosya);
+                $saved_dir = Storage::disk('local')->put($filename, $dosya);
 
-                $dosya_data = [
-                    'asset_id' => $id,
-                    'user_id' => Auth::id(),
-                    'org_name' => $dosya->getClientOriginalName(),
-                    'size' => $dosya->getSize(),
-                    'stored_as' => $yenidosya,
-                    'mimetype' => $dosya->getMimeType(),
-                ];
+                $this->saveRecord($dosya, $id, $saved_dir);
 
-                Log::info('$dosya->getMimeType() = ' . $dosya->getMimeType());
+                //$newfile = Record::create($dosya_data);
 
-                switch ($dosya->getMimeType()) {
-                    // PHOTO
-                    case 'image/jpeg':
-                    case 'image/png':
-                    case 'image/gif':
-                        $exif_data = Photo::exif(Storage::path($yenidosya));
-                        $dosya_data = array_merge($dosya_data, $exif_data);
-                        $newfile = Photo::create($dosya_data);
-                        $this->addedfiles['photo'][] = $newfile->id;
-                        break;
-
-                    // MUSIC
-                    case 'audio/ogg':
-                    case 'audio/webm':
-                    case 'audio/mpeg':
-                    case 'audio/webm':
-                        $newfile = Music::create($dosya_data);
-                        $this->addedfiles['music'][] = $newfile->id;
-                        break;
-
-                    // VIDEO
-                    case 'video/ogg':
-                    case 'video/mp4':
-                    case 'video/mpeg':
-                    case 'video/x-ms-asf':
-                    case 'video/x-msvideo':
-                    case 'video/quicktime':
-                    case 'video/webm':
-                        $newfile = Video::create($dosya_data);
-                        $this->addedfiles['video'][] = $newfile->id;
-                        break;
-
-                    // BOOK
-                    case 'application/pdf':
-                        $newfile = Pdf::create($dosya_data);
-                        $this->addedfiles['pdf'][] = $newfile->id;
-                        break;
-
-                    // OTHER
-                    default:
-                        $newfile = Other::create($dosya_data);
-                        $this->addedfiles['other'][] = $newfile->id;
-                        break;
-                }
+                //$this->addedfiles[] = $newfile->id;
             }
         }
     }
@@ -275,5 +235,63 @@ class AssetController extends Controller
             'asset' => $asset,
             'notification' => $notification,
         ]);
+    }
+
+    public function saveRecord($dosya, $id, $saved_dir)
+    {
+        $dosya_data = [
+            'asset_id' => $id,
+            'user_id' => Auth::id(),
+            'filename' => $dosya->getClientOriginalName(),
+            'size' => $dosya->getSize(),
+            'stored_as' => $saved_dir,
+            'mimetype' => $dosya->getMimeType(),
+        ];
+
+        switch ($dosya->getMimeType()) {
+            // IMAGE
+            case 'image/jpeg':
+            case 'image/png':
+            case 'image/gif':
+                $exif_data = Gorsel::exif(Storage::path($saved_dir));
+                $dosya_data = array_merge($dosya_data, $exif_data);
+
+                $dosya_data['thumbnail'] = Gorsel::createThumb($saved_dir);
+
+                Gorsel::create($dosya_data);
+
+                break;
+
+            // AUDIO
+            case 'audio/ogg':
+            case 'audio/webm':
+            case 'audio/mpeg':
+            case 'audio/webm':
+                Audio::create($dosya_data);
+                break;
+
+            // VIDEO
+            case 'video/ogg':
+            case 'video/mp4':
+            case 'video/mpeg':
+            case 'video/x-ms-asf':
+            case 'video/x-msvideo':
+            case 'video/quicktime':
+            case 'video/webm':
+                $dosya_data['thumbnail'] = Video::createThumb($saved_dir);
+
+                Video::create($dosya_data);
+                break;
+
+            // DOC
+            case 'application/pdf':
+                Document::create($dosya_data);
+                break;
+
+            // OTHER
+            default:
+                return 'other';
+                break;
+        }
     }
 }

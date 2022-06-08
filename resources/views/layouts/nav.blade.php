@@ -53,9 +53,6 @@
                 <span class="ml-1">Add Files</span>
             </a>
 
-
-
-
           <div class="navbar-item has-dropdown is-hoverable">
 
             <p class="navbar-link" href="/Admin">Admin</p>

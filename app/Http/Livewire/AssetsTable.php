@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 use Livewire\WithPagination;
 
@@ -129,11 +130,13 @@ class AssetsTable extends Component
                     $q->where('org_name', 'like', '%' . $this->search . '%');
                 }
 
-                $items = $q->paginate(
+                /*                 $items = $q->paginate(
                     Config::get('constants.table.no_of_results')
-                );
+                ); */
 
-                $request->type = 'audio';
+                // Log::info('ITEMS = ' . $items);
+
+                //$request->type = 'audio';
                 break;
 
             // VIDEO
@@ -175,7 +178,9 @@ class AssetsTable extends Component
 
         return view('livewire.assets-table', [
             'type' => $request->type,
-            'items' => $items,
+            'items' => $q->paginate(
+                Config::get('constants.table.no_of_results')
+            ),
             'notification' => $this->notification,
             'cols_per_row' => Config::get('constants.table.cols_per_row'),
         ]);

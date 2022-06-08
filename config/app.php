@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         'Intervention\Image\ImageServiceProvider',
+        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
     ],
 
     /*
@@ -192,6 +193,7 @@ return [
         ->merge([
             // 'ExampleClass' => App\Example\ExampleClass::class,
             'Image' => 'Intervention\Image\Facades\Image',
+            'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class,
         ])
         ->toArray(),
 ];

@@ -1,8 +1,5 @@
 <div class="section container">
 
-
-
-
     <script>
 
         function confirmDelete(type,id) {
@@ -67,17 +64,6 @@
 
 
 
-
-
-
-/*         function showModal(id) {
-            document.getElementById(id).classList.add('is-active')
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('is-active')
-        } */
-
         function changeCursor(el,isIn) {
             if (isIn) {
                 el.classList.add('finger')
@@ -87,13 +73,6 @@
         }
 
     </script>
-
-
-
-
-
-
-
 
 
     <header class="mt-6">
@@ -173,15 +152,9 @@
 
     </nav>
 
-
-
-
-
-
     <div>
 
         <input type="hidden" id="hiddenType" value="{{$type}}" />
-
 
         @switch($type)
             {{-- ASSETS  --}}
@@ -377,7 +350,6 @@
 
                                 </td>
                             </tr>
-
                             @endforeach
 
                         </tbody>
@@ -389,7 +361,6 @@
                 @endif
 
                 @break
-
 
             {{-- DOCS  --}}
             {{-- ------ --}}
@@ -549,7 +520,8 @@
 
         @endswitch
 
+        {{ $items->links() }}
+
     </div>
-    {{ $items->links() }}
 
 </div>

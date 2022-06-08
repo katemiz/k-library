@@ -23,34 +23,34 @@
                     <tr>
                         <td class="has-text-centered">
                             <p class="heading">Assets</p>
-                            <p class="title"><a href="/assets-list/assets">{{$assets_count}}</a></p>
+                            <p class="title"><a href="/list-records/asset">{{$assets_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Images</p>
-                            <p class="title"><a href="/assets-list/images">{{$images_count}}</a></p>
+                            <p class="title"><a href="/list-records/image">{{$images_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Docs</p>
-                            <p class="title"><a href="/assets-list/docs">{{$docs_count}}</a></p>
+                            <p class="title"><a href="/list-records/doc">{{$docs_count}}</a></p>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="has-text-centered">
                             <p class="heading">Audio</p>
-                            <p class="title"><a href="/assets-list/audio">{{$audio_count}}</a></p>
+                            <p class="title"><a href="/list-records/audio">{{$audio_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Video</p>
-                            <p class="title"><a href="/assets-list/video">{{$video_count}}</a></p>
+                            <p class="title"><a href="/list-records/video">{{$video_count}}</a></p>
                         </td>
 
                         <td class="has-text-centered">
                             <p class="heading">Others</p>
-                            <p class="title"><a href="/assets-list/others">{{$others_count}}</a></p>
+                            <p class="title"><a href="/list-records/other">{{$others_count}}</a></p>
                         </td>
                     </tr>
                 </table>

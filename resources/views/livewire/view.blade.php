@@ -184,18 +184,18 @@
 
 
 
-    {{-- MUSIC  --}}
+    {{-- AUDIO  --}}
     @if (count($asset->audio) > 0)
     <div class="box">
         <p class="menu-label">AUDIO/MUSIC FILES </p>
         <ul>
-            @foreach ($asset->audio as $music )
+            @foreach ($asset->audio as $audio )
             <li>
                 <span class="icon-text">
                 <span class="icon">
                     <x-icon icon="attach" fill="{{config('constants.icons.color.dark')}}"/>
                 </span>
-                <span><a href="/view-pdf/{{$music->id}}">{{$music->org_name}}</a> - {{$music->size}}</span>
+                <span><a href="/access-audio/{{$audio->id}}">{{$audio->filename}}</a> - {{$audio->size}}</span>
                 </span>
             </li>
             @endforeach
@@ -204,18 +204,18 @@
     @endif
 
 
-    {{-- PDFS  --}}
+    {{-- DOCS  --}}
     @if (count($asset->docs) > 0)
     <div class="box">
         <p class="menu-label">DOC FILES </p>
         <ul>
-            @foreach ($asset->docs as $pdf )
+            @foreach ($asset->docs as $doc )
             <li>
                 <span class="icon-text">
                 <span class="icon">
                     <x-icon icon="attach" fill="{{config('constants.icons.color.dark')}}"/>
                 </span>
-                <span><a href="/view-pdf/{{$pdf->id}}">{{$pdf->org_name}}</a> - {{$pdf->size}}</span>
+                <span><a href="/access-doc/{{$doc->id}}">{{$doc->filename}}</a> - {{$doc->size}}</span>
                 </span>
             </li>
             @endforeach
@@ -245,7 +245,7 @@
             <div class="modal-card">
 
             <header class="modal-card-head">
-                <p class="modal-card-title">{{$photo->org_name}}</p>
+                <p class="modal-card-title">{{$photo->filename}}</p>
                 <button class="delete" aria-label="close" onclick="closeModal('m{{$photo->id}}')"></button>
             </header>
 
