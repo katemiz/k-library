@@ -10,14 +10,8 @@
     <link  href="{{ asset('/css/bulma.css') }}" rel="stylesheet" />
     <script src="{{ asset('/js/js.js') }}"></script>
 
-
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-
-
-    <!-- Include the Minimal theme -->
     <link rel="stylesheet" href="{{ asset('/css/sweetalert2_min.css') }}">
     <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
-
 
     @livewireStyles
 

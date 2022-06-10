@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\FileAccessController;
 
-use App\Http\Livewire\AssetsTable;
-use App\Http\Livewire\AssetsView;
+use App\Http\Livewire\AssetView;
 use App\Http\Livewire\ListRecords;
 
 /*
@@ -44,8 +43,8 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('auth');
 
     // LIBRARY ASSET
-    Route::get('/assets-list/{type}', AssetsTable::class);
-    Route::get('/assets-view/{id}', AssetsView::class)->name('view');
+    // Route::get('/assets-list/{type}', AssetsTable::class);
+    Route::get('/asset-view/{id}', AssetView::class)->name('view');
 
     Route::get('assets-form', [AssetController::class, 'forms']);
     Route::get('assets-addfiles', [AssetController::class, 'addfilesform']);
@@ -57,9 +56,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
     Route::get('delete/{id}', [AssetController::class, 'destroy']);
+    Route::get('/delete-attach/{type}/{asset_id}/{id}', [
+        AssetController::class,
+        'deleteattach',
+    ]);
 
     Route::get('/access-audio/{id}', [FileAccessController::class, 'audio']);
-    Route::get('/access-doc/{id}', [FileAccessController::class, 'docs']);
+    Route::get('/access-document/{id}', [FileAccessController::class, 'docs']);
+    Route::get('/access-dosya/{id}', [FileAccessController::class, 'dosya']);
 
     Route::get('/list-records/{type}', ListRecords::class);
 });

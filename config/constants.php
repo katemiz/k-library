@@ -36,6 +36,8 @@ return [
 
     'thumbnail' => [
         'max_dimension' => 200,
+        'max_hordir' => 160,
+        'max_verdir' => 100,
     ],
 
     'table' => [
@@ -44,39 +46,12 @@ return [
         'no_of_thumbnails' => 20,
     ],
 
-    'asset_types' => [
-        [
-            'title' => 'Images-Pictures',
-            'type' => 'image',
-            'image' => 'type_image.svg',
-            'hilight' => false,
-        ],
-        [
-            'title' => 'Videos-Movies',
-            'type' => 'video',
-            'image' => 'type_video.svg',
-            'hilight' => false,
-        ],
-
-        [
-            'title' => 'Music',
-            'type' => 'music',
-            'image' => 'type_music.svg',
-            'hilight' => false,
-        ],
-
-        [
-            'title' => 'Books',
-            'type' => 'book',
-            'image' => 'type_book.svg',
-            'hilight' => false,
-        ],
-
-        [
-            'title' => 'Other - Any Type',
-            'type' => 'file',
-            'image' => 'type_file.svg',
-            'hilight' => false,
-        ],
+    'datatypes' => [
+        'asset' => 'Assets',
+        'image' => 'Images',
+        'audio' => 'Audio',
+        'video' => 'Video',
+        'document' => 'Documents',
+        'dosya' => 'Others',
     ],
 ];

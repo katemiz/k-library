@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 use App\Models\Asset;
 use App\Models\Gorsel;
@@ -63,28 +60,35 @@ class AssetController extends Controller
             ->toArray();
     }
 
-    public function stats(Request $req)
+    public function stats()
     {
+        $counts['asset'] = Asset::where([
+            ['user_id', '=', Auth::id()],
+            ['is_fake', '=', 0],
+        ])->count();
+
+        $counts['image'] = Gorsel::where([
+            ['user_id', '=', Auth::id()],
+        ])->count();
+
+        $counts['audio'] = Audio::where([
+            ['user_id', '=', Auth::id()],
+        ])->count();
+
+        $counts['video'] = Video::where([
+            ['user_id', '=', Auth::id()],
+        ])->count();
+
+        $counts['document'] = Document::where([
+            ['user_id', '=', Auth::id()],
+        ])->count();
+
+        $counts['dosya'] = Dosya::where([
+            ['user_id', '=', Auth::id()],
+        ])->count();
+
         return view('dashboard', [
-            'assets_count' => Asset::where([
-                ['user_id', '=', Auth::id()],
-                ['is_fake', '=', 0],
-            ])->count(),
-            'images_count' => Gorsel::where([
-                ['user_id', '=', Auth::id()],
-            ])->count(),
-            'docs_count' => Document::where([
-                ['user_id', '=', Auth::id()],
-            ])->count(),
-            'audio_count' => Audio::where([
-                ['user_id', '=', Auth::id()],
-            ])->count(),
-            'video_count' => Video::where([
-                ['user_id', '=', Auth::id()],
-            ])->count(),
-            'others_count' => Dosya::where([
-                ['user_id', '=', Auth::id()],
-            ])->count(),
+            'counts' => $counts,
         ]);
     }
 
@@ -157,51 +161,96 @@ class AssetController extends Controller
             return true;
         }
 
-        $files = explode(',', $req->filesToDelete);
+        foreach (json_decode($req->filesToDelete) as $key => $dizin) {
+            if (count($dizin) > 0) {
+                foreach ($dizin as $id) {
+                    switch ($key) {
+                        case 'image':
+                            $attach = Gorsel::find($id);
+                            break;
 
-        if (count($files) > 0) {
-            foreach ($files as $attach) {
-                $pieces = explode('_', $attach);
+                        case 'audio':
+                            $attach = Audio::find($id);
+                            break;
 
-                $mimetype = $pieces['0'];
-                $id = $pieces['1'];
+                        case 'video':
+                            $attach = Video::find($id);
+                            break;
 
-                switch ($mimetype) {
-                    // PHOTO
-                    case 'image/jpeg':
-                    case 'image/png':
-                    case 'image/gif':
-                        $attach = Photo::find($id);
-                        break;
+                        case 'doc':
+                            $attach = Document::find($id);
+                            break;
 
-                    // BOOK
-                    default:
-                    case 'application/pdf':
-                        $attach = Pdf::find($id);
-                        break;
+                        case 'dosya':
+                            $attach = Dosya::find($id);
+                            break;
+                    }
+
+                    Storage::delete($attach->stored_as);
+                    $attach->delete();
                 }
-
-                Storage::delete($attach->stored_as);
-                $attach->delete();
             }
         }
 
         return true;
     }
 
+    public function deleteattach(Request $request)
+    {
+        switch ($request->type) {
+            case 'image':
+                $attach = Gorsel::find($request->id);
+                break;
+
+            case 'audio':
+                $attach = Audio::find($request->id);
+                break;
+
+            case 'video':
+                $attach = Video::find($request->id);
+                break;
+
+            case 'doc':
+                $attach = Document::find($request->id);
+                break;
+
+            case 'dosya':
+                $attach = Dosya::find($request->id);
+                break;
+        }
+
+        Storage::delete($attach->stored_as);
+        $attach->delete();
+
+        $ass = Asset::find($request->asset_id);
+
+        if ($ass->getAttachmentNumber() > 0) {
+            return view('asset-view', [
+                'id' => $request->asset_id,
+            ]);
+        } else {
+            $ass->delete();
+            return view('/list-records', ['type' => 'assetf']);
+        }
+    }
+
     public function forms(Request $request)
     {
         $asset = false;
+        $is_fake = false;
 
         if ($request->id) {
             $asset = Asset::find($request->id);
-            $asset->attachments = $asset->images->merge($asset->docs);
+            $is_fake = $asset->is_fake;
         }
 
-        return view('asset.form', ['asset' => $asset, 'addfilesonly' => false]);
+        return view('asset.form', [
+            'asset' => $asset,
+            'addfilesonly' => $is_fake,
+        ]);
     }
 
-    public function addfilesform(Request $request)
+    public function addfilesform()
     {
         $asset = false;
 
@@ -290,7 +339,7 @@ class AssetController extends Controller
 
             // OTHER
             default:
-                return 'other';
+                Dosya::create($dosya_data);
                 break;
         }
     }

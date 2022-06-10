@@ -14,9 +14,6 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/bulma.css') }}">
 
-        <!-- Scripts -->
-        {{-- <script src="{{ asset('js/js.js') }}" defer></script> --}}
-
         <style>
 
             html {

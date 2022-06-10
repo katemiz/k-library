@@ -1,126 +1,123 @@
-
 @extends('layouts.layout')
 
 
 @section('content')
 
+    <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
+
     <script>
 
-    let cicon = `<x-icon icon="cancel" fill="{{config('constants.icons.color.danger')}}"/>`
+        let cicon = `<x-icon icon="cancel" fill="{{config('constants.icons.color.danger')}}"/>`
 
-    let filesToDelete = []
-    let filesToExclude = []
-
-    function removeFile(mimetype,id) {
-
-        if (filesToDelete.includes(mimetype+'_'+id)) {
-            filesToDelete.splice(filesToDelete.indexOf(mimetype+'_'+id),1)
-        } else {
-            filesToDelete.push(mimetype+'_'+id)
+        let filesToDelete = {
+            'image':[],
+            'audio':[],
+            'video':[],
+            'doc':[],
+            'dosya':[]
         }
 
-        if (filesToDelete.length > 0) {
-            document.getElementById('filesToDelete').value = filesToDelete.join()
-        } else {
-            document.getElementById('filesToDelete').value = ''
-        }
+        let filesToExclude = []
 
-        Array.from(document.getElementById(`ef${id}`).children).forEach(element => {
+        function removeFile(prefix,id) {
 
-            if (element.dataset.name !== undefined && element.dataset.name === 'buttons') {
-
-                Array.from(element.children).forEach(el => {
-
-                    if (Array.from(el.classList).includes('is-hidden')) {
-                        el.classList.remove('is-hidden')
-                    } else {
-                        el.classList.add('is-hidden')
-                    }
-                })
+            if (filesToDelete[prefix].includes(id)) {
+                filesToDelete[prefix].splice(filesToDelete[prefix].indexOf(id),1)
             } else {
-
-                if (Array.from(element.classList).includes('iptal')) {
-                    element.classList.remove('iptal')
-                } else {
-                    element.classList.add('iptal')
-                }
+                filesToDelete[prefix].push(id)
             }
-        });
-    }
 
+            document.getElementById('filesToDelete').value = JSON.stringify(filesToDelete)
 
-    function cancelFile(key,fname) {
+            Array.from(document.getElementById(prefix+id).children).forEach(element => {
 
-        document.getElementById(`K${key}`).remove()
+                if (element.dataset.name !== undefined && element.dataset.name === 'buttons') {
 
-        if (filesToExclude.includes(fname)) {
-            filesToExclude.splice(filesToExclude.indexOf(fname),1)
-        } else {
-            filesToExclude.push(fname)
+                    Array.from(element.children).forEach(el => {
+
+                        if (Array.from(el.classList).includes('is-hidden')) {
+                            el.classList.remove('is-hidden')
+                        } else {
+                            el.classList.add('is-hidden')
+                        }
+                    })
+                } else {
+
+                    if (Array.from(element.classList).includes('iptal')) {
+                        element.classList.remove('iptal')
+                    } else {
+                        element.classList.add('iptal')
+                    }
+                }
+            });
         }
 
-        if (filesToExclude.length > 0) {
-            document.getElementById('filesToExclude').value = filesToExclude.join()
-        } else {
+        function cancelFile(key,fname) {
+
+            document.getElementById(`K${key}`).remove()
+
+            if (filesToExclude.includes(fname)) {
+                filesToExclude.splice(filesToExclude.indexOf(fname),1)
+            } else {
+                filesToExclude.push(fname)
+            }
+
+            if (filesToExclude.length > 0) {
+                document.getElementById('filesToExclude').value = filesToExclude.join()
+            } else {
+                document.getElementById('filesToExclude').value = ''
+            }
+
+            document.getElementById('filesToUpload').value = document.getElementById('filesToUpload').value-1
+
+            if (document.getElementById('filesToUpload').value == 0) {
+                document.getElementById('noFile').classList.remove('is-hidden')
+            }
+        }
+
+        function getNames() {
+
+            var newFiles = document.getElementById('fupload')
+
+            if (Object.entries(newFiles.files).length < 1) {
+                document.getElementById('noFile').classList.remove('is-hidden')
+                return true
+            }
+
+            document.getElementById('noFile').classList.add('is-hidden')
+
+            let satir = ''
+            dosyalar = []
+
+            for (const [key, dosya] of Object.entries(newFiles.files)) {
+
+                satir = satir +`
+                <tr id="K${key}">
+                    <td>${dosya.name}</td>
+                    <td>${dosya.size}</td>
+                    <td>${dosya.type}</td>
+                    <td><a onclick="cancelFile('${key}','${dosya.name}')">${cicon}</a></td>
+                </tr>`
+
+                dosyalar.push({key:dosya})
+            }
+
+            document.getElementById('filesToUpload').value = Object.entries(newFiles.files).length
             document.getElementById('filesToExclude').value = ''
+            document.getElementById('filesList').innerHTML = satir
         }
-
-        document.getElementById('filesToUpload').value = document.getElementById('filesToUpload').value-1
-
-        if (document.getElementById('filesToUpload').value == 0) {
-            document.getElementById('noFile').classList.remove('is-hidden')
-        }
-    }
-
-
-
-
-    function getNames() {
-
-        var newFiles = document.getElementById('fupload')
-
-        if (Object.entries(newFiles.files).length < 1) {
-            document.getElementById('noFile').classList.remove('is-hidden')
-            return true
-        }
-
-        document.getElementById('noFile').classList.add('is-hidden')
-
-        let satir = ''
-        dosyalar = []
-
-        for (const [key, dosya] of Object.entries(newFiles.files)) {
-
-            satir = satir +`
-            <tr id="K${key}">
-                <td>${dosya.name}</td>
-                <td>${dosya.size}</td>
-                <td>${dosya.type}</td>
-                <td><a onclick="cancelFile('${key}','${dosya.name}')">${cicon}</a></td>
-            </tr>`
-
-            dosyalar.push({key:dosya})
-        }
-
-        document.getElementById('filesToUpload').value = Object.entries(newFiles.files).length
-        document.getElementById('filesToExclude').value = ''
-
-        document.getElementById('filesList').innerHTML = satir
-    }
 
     </script>
 
-
     <div class="section container">
 
-        <header class="mt-6">
+        <header>
             @if ($addfilesonly)
                 <h1 class="title is-size-1 has-text-weight-light">Add Files</h1>
-                <h1 class="subtitle">Attach any type of files</h1>
             @else
                 <h1 class="title is-size-1 has-text-weight-light">{{$asset ? 'Edit Asset' : 'New Asset'}}</h1>
-                <h1 class="subtitle">Attach any type of files</h1>
             @endif
+            <h1 class="subtitle">Attach any type of files</h1>
         </header>
 
         <div class="column box mt-6">
@@ -152,7 +149,11 @@
             @if ($asset)
 
             <div class="field">
-                <label class="label">Files for this asset</label>
+                <label class="label">Files for this asset : [
+                    @php
+                    echo ini_get("upload_max_filesize");
+                    @endphp ]
+                </label>
 
                 <div class="column">
                 <table class="table is-striped  is-fullwidth" >
@@ -165,35 +166,39 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($asset->images)
+                            @foreach ($asset->images as  $image)
+                                <x-file-tr :dbfile="$image" prefix='image'/>
+                            @endforeach
+                        @endif
 
+                        @if ($asset->audio)
+                            @foreach ($asset->audio as  $audio)
+                                <x-file-tr :dbfile="$audio" prefix='audio'/>
+                            @endforeach
+                        @endif
 
-                            @if ($asset->attachments)
-                                @foreach ($asset->attachments as  $attachment)
-                                <tr id="ef{{$attachment->id}}">
-                                    <td>{{$attachment->org_name}}</td>
-                                    <td>{{$attachment->size}}</td>
-                                    <td>{{$attachment->mimetype}}</td>
-                                    <td data-name="buttons">
-                                        <span class="icon" onclick="removeFile('{{$attachment->mimetype}}',{{$attachment->id}})">
-                                            <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
-                                        </span>
+                        @if ($asset->video)
+                            @foreach ($asset->video as  $video)
+                                <x-file-tr :dbfile="$video" prefix='video'/>
+                            @endforeach
+                        @endif
 
-                                        <span class="is-hidden icon" onclick="removeFile('{{$attachment->mimetype}}',{{$attachment->id}})">
-                                            <x-icon icon="undo" fill="{{config('constants.icons.color.active')}}"/>
-                                        </span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            @endif
+                        @if ($asset->docs)
+                            @foreach ($asset->docs as  $doc)
+                                <x-file-tr :dbfile="$doc" prefix='doc'/>
+                            @endforeach
+                        @endif
 
-
+                        @if ($asset->dosyalar)
+                            @foreach ($asset->dosyalar as  $dosya)
+                                <x-file-tr :dbfile="$dosya" prefix='dosya'/>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
                 </div>
                 @endif
-
-
-
 
                 <div class="columns">
 
@@ -263,7 +268,7 @@
         ClassicEditor
         .create( document.querySelector('#editor') )
         .then( editor => {
-            //console.log(editor);
+            // console.log(editor);
             let icerik = document.getElementById('ckeditor').value
 
             if (icerik.length>0) {
@@ -280,5 +285,4 @@
     </script>
     @endif
 
-
-  @endsection
+@endsection

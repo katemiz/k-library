@@ -11,7 +11,6 @@ use App\Models\Video;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -23,7 +22,6 @@ class ListRecords extends Component
     use WithPagination;
 
     public $search = '';
-
     public $type = false;
 
     public $sortField = 'title';
@@ -56,8 +54,6 @@ class ListRecords extends Component
             $this->type = $request->type;
         }
         $q = $this->getDataPerType();
-
-        // Log::info('this->type = ' . $this->type);
 
         return view('livewire.list-records', [
             'type' => $this->type,
@@ -97,6 +93,21 @@ class ListRecords extends Component
 
                 break;
 
+            case 'assetf':
+                $q = Asset::query()->orderBy(
+                    $this->sortTimeField,
+                    $this->sortTimeDirection
+                );
+
+                $q->where('user_id', '=', Auth::id());
+                $q->where('is_fake', '=', 1);
+
+                if (strlen($this->search) > 0) {
+                    $q->where('title', 'like', '%' . $this->search . '%');
+                }
+
+                break;
+
             case 'image':
                 $q = Gorsel::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
@@ -122,7 +133,6 @@ class ListRecords extends Component
                 }
                 break;
 
-            // VIDEO
             case 'video':
                 $q = Video::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
@@ -135,7 +145,7 @@ class ListRecords extends Component
                 }
                 break;
 
-            case 'doc':
+            case 'document':
                 $q = Document::query()
                     ->orderBy($this->sortTimeField, $this->sortTimeDirection)
                     ->orderBy('filename', $this->sortDirection);

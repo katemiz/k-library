@@ -3,11 +3,11 @@
     <!-- Left side -->
     <div class="level-left">
         <div class="level-item  has-text-centered">
-            <a href="{{ $type == 'assets' ? '/assets-form' : '/assets-addfiles'}}" class="button is-link">
+            <a href="{{ $type == 'asset' ? '/assets-form' : '/assets-addfiles'}}" class="button is-link">
                 <span class="icon is-small">
                     <x-icon icon="plus" fill="{{config('constants.icons.color.light')}}"/>
                 </span>
-                <span>{{ $type == 'assets' ? 'Add Asset' : 'Add Files'}}</span>
+                <span>{{ $type == 'asset' ? 'Add Asset' : 'Add Files'}}</span>
             </a>
         </div>
     </div>

@@ -20,39 +20,32 @@
             <div class="column">
 
                 <table class="table is-fullwidth">
-                    <tr>
-                        <td class="has-text-centered">
-                            <p class="heading">Assets</p>
-                            <p class="title"><a href="/list-records/asset">{{$assets_count}}</a></p>
-                        </td>
+
+                    @php
+                        $i = 0
+                    @endphp
+
+                    @foreach (Config::get('constants.datatypes') as $key => $dtype)
+
+                        @if ($i % 3 === 0)
+                        <tr>
+                        @endif
 
                         <td class="has-text-centered">
-                            <p class="heading">Images</p>
-                            <p class="title"><a href="/list-records/image">{{$images_count}}</a></p>
+                            <p class="heading">{{$dtype}}</p>
+                            <p class="title"><a href="/list-records/{{$key}}">{{$counts[$key]}}</a></p>
                         </td>
 
-                        <td class="has-text-centered">
-                            <p class="heading">Docs</p>
-                            <p class="title"><a href="/list-records/doc">{{$docs_count}}</a></p>
-                        </td>
-                    </tr>
+                        @php
+                        $i++
+                        @endphp
 
-                    <tr>
-                        <td class="has-text-centered">
-                            <p class="heading">Audio</p>
-                            <p class="title"><a href="/list-records/audio">{{$audio_count}}</a></p>
-                        </td>
+                        @if ($i % 3 === 0)
+                        </tr>
+                        @endif
 
-                        <td class="has-text-centered">
-                            <p class="heading">Video</p>
-                            <p class="title"><a href="/list-records/video">{{$video_count}}</a></p>
-                        </td>
+                    @endforeach
 
-                        <td class="has-text-centered">
-                            <p class="heading">Others</p>
-                            <p class="title"><a href="/list-records/other">{{$others_count}}</a></p>
-                        </td>
-                    </tr>
                 </table>
 
             </div>

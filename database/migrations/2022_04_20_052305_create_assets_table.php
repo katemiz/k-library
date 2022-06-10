@@ -21,8 +21,6 @@ return new class extends Migration {
             $table->boolean('is_fake')->default(false);
             $table->string('title')->nullable();
             $table->string('notes')->nullable();
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

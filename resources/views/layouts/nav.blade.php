@@ -27,63 +27,41 @@
                 </span>
             </a>
 
-
-            <a href="/assets-list/assets" class="navbar-item">
+            <a href="/list-records/asset" class="navbar-item">
                 <span class="icon">
                     <x-icon icon="bag" fill="{{config('constants.icons.color.active')}}"/>
                 </span>
                 <span class="ml-1">My Assets</span>
             </a>
 
-
-
-
-            <a href="/assets-form" class="navbar-item">
+            <a href="/list-records/assetf" class="navbar-item">
                 <span class="icon">
-                    <x-icon icon="add-asset" fill="{{config('constants.icons.color.active')}}"/>
+                    <x-icon icon="bag-file" fill="{{config('constants.icons.color.active')}}"/>
                 </span>
-                <span class="ml-1">Add Asset</span>
+                <span class="ml-1">My Files</span>
             </a>
 
+            <div class="navbar-item has-dropdown is-hoverable">
 
-            <a href="/assets-addfiles" class="navbar-item">
-                <span class="icon">
-                    <x-icon icon="add-file" fill="{{config('constants.icons.color.active')}}"/>
-                </span>
-                <span class="ml-1">Add Files</span>
-            </a>
+                <p class="navbar-link" href="/Admin">Add</p>
 
-          <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-dropdown">
+                    <a href="/assets-form" class="navbar-item">
+                        <span class="icon">
+                            <x-icon icon="add-asset" fill="{{config('constants.icons.color.active')}}"/>
+                        </span>
+                        <span class="ml-1">Add Asset</span>
+                    </a>
 
-            <p class="navbar-link" href="/Admin">Admin</p>
+                    <a href="/assets-addfiles" class="navbar-item">
+                        <span class="icon">
+                            <x-icon icon="add-file" fill="{{config('constants.icons.color.active')}}"/>
+                        </span>
+                        <span class="ml-1">Add Files</span>
+                    </a>
+                </div>
 
-            <div class="navbar-dropdown">
-
-              <a  href="/simpleitem/project" class="navbar-item">Settings</a>
-
-              <hr class="navbar-divider" />
-
-              <a  href="/bcategory" class="navbar-item">
-                Business Categories
-              </a>
-              <a  href="/" class="navbar-item">Training Categories</a>
-              <a  href="/simpleitem/profession" class="navbar-item">
-                Professions
-              </a>
-              <a  href="/simpleitem/diploma" class="navbar-item">Diploma</a>
-              <a  href="/simpleitem/language" class="navbar-item">
-                Language
-              </a>
-
-              <hr class="navbar-divider" />
-
-              <a  href="/slevels" class="navbar-item">Skill Levels</a>
-
-            </div>
-
-          </div>
-
-
+              </div>
           @endif
 
       </div>

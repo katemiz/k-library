@@ -1,8 +1,19 @@
 <div class="section container">
 
+    <script src="{{ asset('/js/delete.js') }}"></script>
+
     <script>
 
         function confirmDelete(type,id) {
+
+            let action = swalConfirm(type,id)
+
+            if (action) {
+                @this.call(action,id)
+            }
+        }
+
+        function confirmDeleteSil(type,id) {
             let msg,cbutton,title
 
             switch (type) {
@@ -19,7 +30,6 @@
                     cbutton = 'Delete'
                     title= 'Delete Image?'
                     break;
-
 
                 case 'audio':
                     action = 'deleteRecord'
@@ -57,11 +67,12 @@
             }).then((result) => {
 
                 if (result.isConfirmed) {
-                    @this.call(action,id)
+                    return action
+                } else {
+                    return false
                 }
             })
         }
-
 
         function searchFunction() {
 
@@ -86,6 +97,10 @@
         @switch($type)
             @case('asset')
                 My Assets
+                @break
+
+            @case('assetf')
+                File Uploads
                 @break
 
             @case('image')
@@ -119,10 +134,72 @@
 
     @if ($records->total() > 0)
 
-
-
-
         @switch($type)
+
+            {{-- FILE UPLOADS --}}
+            {{-- --------------------------- --}}
+            @case('assetf')
+
+                <table class="table is-fullwidth">
+
+                    <caption><b>{{ $records->total() }}</b> Result{{ $records->total() > 1 ? 's':'' }}</caption>
+
+                    <thead>
+                    <tr>
+
+                        <th>
+                            <span class="icon-text" wire:click="sortBy('title')">
+                                <span class="icon {{ $sortDirection === 'asc' ? 'is-hidden' : ''}}">
+                                    <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
+                                </span>
+                                <span class="icon {{ $sortDirection === 'desc' ? 'is-hidden' : ''}}">
+                                    <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
+                                </span>
+                                <span>Title</span>
+                            </span>
+                        </th>
+
+                        <th class="is-2">
+                            <span class="icon-text" wire:click="sortBy('created_at')">
+                                <span class="icon {{ $sortTimeDirection === 'asc' ? 'is-hidden' : ''}}">
+                                    <x-icon icon="arrow-up" fill="{{config('constants.icons.color.active')}}"/>
+                                </span>
+                                <span class="icon {{ $sortTimeDirection === 'desc' ? 'is-hidden' : ''}}">
+                                    <x-icon icon="arrow-down" fill="{{config('constants.icons.color.active')}}"/>
+                                </span>
+                                <span>Created At</span>
+                            </span>
+                        </th>
+
+                        <th class="has-text-right is-2">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach ($records as $record)
+                        <tr>
+                            <td>
+                                <a href="/asset-view/{{ $record->id }}">{{$record->id}} - {{$record->title}}</a>
+                            </td>
+
+                            <td>{{$record->created_at}}</td>
+
+                            <td class="has-text-right">
+
+                                <a href="/asset-view/{{ $record->id }}" class="icon">
+                                    <x-icon icon="eye" fill="{{config('constants.icons.color.active')}}"/>
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+                @break
+
 
             {{-- ASSET --}}
             {{-- --------------------------- --}}
@@ -170,7 +247,7 @@
                         @foreach ($records as $record)
                         <tr>
                             <td>
-                                <a href="/assets-view/{{ $record->id }}">{{$record->title}}</a>
+                                <a href="/asset-view/{{ $record->id }}">{{$record->title}}</a>
                             </td>
 
                             <td>{!! $record->notes !!}</td>
@@ -178,7 +255,7 @@
 
                             <td class="has-text-right">
 
-                                <a href="/assets-view/{{ $record->id }}" class="icon">
+                                <a href="/asset-view/{{ $record->id }}" class="icon">
                                     <x-icon icon="eye" fill="{{config('constants.icons.color.active')}}"/>
                                 </a>
 
@@ -197,7 +274,8 @@
                 @break
 
 
-            {{-- IMAGE --}}
+
+                {{-- IMAGE --}}
             {{-- --------------------------- --}}
             @case('image')
 
@@ -240,7 +318,6 @@
             @case('audio')
             @case('doc')
             @case('other')
-
             @default
 
                 <!-- TABLE -->
@@ -283,18 +360,17 @@
 
                         @foreach ($records as $record)
                         <tr>
-
                             <td>
-                                <a href="/assets-view/{{ $record->id }}">{{$record->filename}}</a>
+                                <a href="/access-{{$type}}/{{ $record->id }}">{{$record->filename}}</a>
                             </td>
 
                             <td>{{$record->created_at}}</td>
 
                             <td class="has-text-right">
 
-                                <a href="/assets-view/{{ $record->id }}" class="icon">
+                                {{-- <a href="/assets-view/{{ $record->id }}" class="icon">
                                     <x-icon icon="edit" fill="{{config('constants.icons.color.active')}}"/>
-                                </a>
+                                </a> --}}
 
                                 <a onclick="confirmDelete('{{ $type }}','{{ $record->id }}')" class="icon">
                                     <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
@@ -309,22 +385,14 @@
 
                 </table>
 
-
                 @break
 
         @endswitch
 
-
-
-
-
-
-
-
         {{ $records->links()}}
 
     @else
-        <div class="notification is-warning is-light">No record [{{$type}}] in system yet!</div>
+        <div class="notification is-warning is-light">No {{$type}} in system yet!</div>
     @endif
 
 </div>

@@ -16,4 +16,6 @@ class Dosya extends Model
 {
     use HasFactory;
     protected $table = 'dosyalar';
+
+    protected $guarded = [];
 }

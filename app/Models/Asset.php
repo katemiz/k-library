@@ -11,6 +11,9 @@ use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Carbon;
 
 class Asset extends Model
 {
@@ -43,30 +46,19 @@ class Asset extends Model
         return $this->hasMany(Document::class);
     }
 
-    /*     protected function images(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value, $attributes) =>
-                Record::query()
-                    ->where([
-                        ['asset_id', '=', $this->id],
-                        ['classification', '=', 'image'],
-                    ]),
-        );
-    }
- */
 
-    /*     protected function docs(): Attribute
+    public function getAttachmentNumber()
     {
-        return Attribute::make(
-            get: fn ($value, $attributes) =>
-                Record::query()
-                    ->where([
-                        ['asset_id', '=', $value],
-                        ['classification', '=', 'doc'],
-                    ]),
+        return $this->images()->count()+$this->dosyalar()->count()+$this->video()->count()+$this->audio()->count()+$this->docs()->count();
+    }
+
+    protected function carbonCreatedAt(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => Carbon::parse(
+                $attributes['created_at']
+            )->diffForHumans(),
         );
     }
 
- */
 }

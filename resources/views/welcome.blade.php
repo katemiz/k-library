@@ -35,15 +35,16 @@
 
             <div class="column  is-half">
 
-                <h2 class="subtitle has-text-weight-light">Data Types</h2>
+                <h2 class="subtitle has-text-weight-light">Categorized Data Types</h2>
 
 
                 <div class="content">
                     <ul>
-                        <li>Books</li>
-                        <li>Videos</li>
-                        <li>Photos/Images</li>
-                        <li>Any file that you can think of</li>
+                        <li>Image</li>
+                        <li>Audio</li>
+                        <li>Video</li>
+                        <li>Docs (Pdf/Doc etc ...)</li>
+                        <li>Other : Any file that you can think of</li>
                     </ul>
                 </div>
 

@@ -31,7 +31,7 @@ class FileAccessController extends Controller
 
             return response()->download(
                 $dosya,
-                'Test File',
+                $audio->filename,
                 $headers,
                 'inline'
             );
@@ -57,7 +57,33 @@ class FileAccessController extends Controller
 
             return response()->download(
                 $dosya,
-                'Test File',
+                $doc->filename,
+                $headers,
+                'inline'
+            );
+        } else {
+            abort(404, 'File not found!');
+        }
+    }
+
+    public function dosya($id)
+    {
+        $d = Dosya::find($id);
+
+        if (!$this->checkPermission($d->user_id)) {
+            abort(404, 'No permission!');
+        }
+
+        $dosya = Storage::path($d->stored_as);
+
+        if (file_exists($dosya)) {
+            $headers = [
+                'Content-Type' => $d->mimetype,
+            ];
+
+            return response()->download(
+                $dosya,
+                $d->filename,
                 $headers,
                 'inline'
             );
