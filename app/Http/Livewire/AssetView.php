@@ -13,15 +13,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
-
-use Illuminate\Support\Facades\Log;
-
-use Carbon\Carbon;
-use Image;
 
 class AssetView extends Component
 {
@@ -29,6 +21,8 @@ class AssetView extends Component
     public $photo_data = '';
     public $notification = false;
     public $icerik = '';
+
+    protected $listeners = ['delete' => 'deleteAttach'];
 
     public function render(Request $request)
     {
@@ -55,7 +49,7 @@ class AssetView extends Component
         $this->photo_data = Gorsel::previewGorsel($p->stored_as);
     }
 
-    public function deleteAsset(Request $request, $assetId, $photoId)
+    public function deleteAsset($assetId)
     {
         $asset = Asset::find($assetId);
 
@@ -89,15 +83,50 @@ class AssetView extends Component
         return redirect('/assets-list/assets', ['m' => 'delete']);
     }
 
-    public function deletePhoto(Request $request, $assetId, $photoId)
+    public function deleteAttach(Request $request, $type, $assetId, $id)
     {
-        Gorsel::find($photoId)->delete();
+        switch ($type) {
+            case 'image':
+                $attach = Gorsel::find($id);
+                break;
+
+            case 'audio':
+                $attach = Audio::find($id);
+                break;
+
+            case 'video':
+                $attach = Video::find($id);
+                break;
+
+            case 'doc':
+                $attach = Document::find($id);
+                break;
+
+            case 'dosya':
+                $attach = Dosya::find($id);
+                break;
+        }
+
+        Storage::delete($attach->stored_as);
+        $attach->delete();
+
         $request->id = $assetId; // needed for render()
 
         $this->notification = [
             'type' => 'is-success',
-            'message' => 'Image has been deleted',
+            'message' => $type . ' has been deleted',
         ];
+
+        $ass = Asset::find($assetId);
+
+        if ($ass->getAttachmentNumber() < 1) {
+            $ass->delete();
+
+            return redirect('/list-records/asset', [
+                'm' => 'delete',
+                'notification' => $this->notification,
+            ]);
+        }
     }
 
     public function closeModal(Request $request, $assetId)

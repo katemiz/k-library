@@ -4,19 +4,6 @@
     <script src="{{ asset('/js/modal.js') }}"></script>
     <script src="{{ asset('/js/cursor.js') }}"></script>
 
-
-    <script>
-        function confirmDelete(type,assetId,id) {
-            let action
-
-            if (action = swalConfirm(type)) {
-                @this.call(action,id)
-            }
-        }
-    </script>
-
-
-
     <!-- Main container -->
     <nav class="level">
         <!-- Left side -->
@@ -32,7 +19,7 @@
             @if (!$asset->is_fake)
             <a href="/assets-form/{{ $asset->id }}" class="button is-link mr-2">Edit</a>
             @endif
-            <button onclick="confirmDelete('asset','{{ $asset->id }}',false)" class="button is-danger is-outlined">Delete</button>
+            <button onclick="swalConfirm('asset','{{ $asset->id }}',false)" class="button is-danger is-outlined">Delete</button>
         </div>
     </nav>
 
@@ -55,28 +42,7 @@
 
             @foreach ($asset->images as $image )
             <div class="column is-3-desktop">
-                <div class="card">
-
-                    <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$image->id}}')">
-                        <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
-                            <img src="{{ $image->thumbnail }}">
-                        </figure>
-                    </div>
-
-                    <footer class="card-footer">
-
-                        <a onclick="showModal('m{{$image->id}}')" class="card-footer-item">
-                            <x-icon icon="tag" fill="{{config('constants.icons.color.active')}}"/>
-                        </a>
-
-                        <a onclick="showModal('m{{$image->id}}')" class="card-footer-item">
-                            <x-icon icon="preview" fill="{{config('constants.icons.color.active')}}"/>
-                        </a>
-                        <a onclick="confirmDelete('image','{{$asset->id}}','{{$image->id}}')" class="card-footer-item">
-                            <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
-                        </a>
-                    </footer>
-                </div>
+                <x-card-image :image="$image" />
             </div>
             @endforeach
 
@@ -84,48 +50,20 @@
 
     </div>
     @endif
-
 
     {{-- VIDEO --}}
     @if (count($asset->video) > 0)
     <div class="box">
-
         <p class="menu-label">VIDEO FILES </p>
-
         <div class="columns is-multiline">
-
             @foreach ($asset->video as $video )
             <div class="column is-3-desktop">
-                <div class="card">
-
-                    <div class="card-image" wire:click="showPhoto('{{$asset->id}}','{{$video->id}}')">
-                        <figure class="image" onmouseover="changeCursor(this,true)" onmouseout="changeCursor(this,false)">
-                            <img src="{{ $video->thumbnail }}">
-                        </figure>
-                    </div>
-
-                    <footer class="card-footer">
-
-                        <a onclick="showModal('m{{$video->id}}')" class="card-footer-item">
-                            <x-icon icon="tag" fill="{{config('constants.icons.color.active')}}"/>
-                        </a>
-
-                        <a onclick="showModal('m{{$video->id}}')" class="card-footer-item">
-                            <x-icon icon="preview" fill="{{config('constants.icons.color.active')}}"/>
-                        </a>
-                        <a onclick="confirmDelete('video','{{$asset->id}}','{{$video->id}}')" class="card-footer-item">
-                            <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
-                        </a>
-                    </footer>
-                </div>
+                <x-card-video :video="$video" />
             </div>
             @endforeach
-
         </div>
-
     </div>
     @endif
-
 
     {{-- AUDIO  --}}
     @if (count($asset->audio) > 0)
@@ -139,7 +77,6 @@
     </div>
     @endif
 
-
     {{-- DOCS  --}}
     @if (count($asset->docs) > 0)
     <div class="box">
@@ -151,7 +88,6 @@
         </table>
     </div>
     @endif
-
 
     {{-- OTHER TYPES  --}}
     @if (count($asset->dosyalar) > 0)
@@ -165,9 +101,6 @@
     </div>
     @endif
 
-
-
-
     {{--  DATE INFO  --}}
     <nav class="level">
         <!-- Left side -->
@@ -180,7 +113,6 @@
             {{$asset->carbon_created_at}}
         </div>
     </nav>
-
 
     {{-- MODALS : IMAGE PROPS --}}
     @foreach ($asset->images as $photo )

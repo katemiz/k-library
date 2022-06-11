@@ -4,76 +4,6 @@
 
     <script>
 
-        function confirmDelete(type,id) {
-
-            let action = swalConfirm(type,id)
-
-            if (action) {
-                @this.call(action,id)
-            }
-        }
-
-        function confirmDeleteSil(type,id) {
-            let msg,cbutton,title
-
-            switch (type) {
-                case 'asset':
-                    action = 'deleteAsset'
-                    msg = "You won't be able to revert this!"
-                    cbutton = 'Delete'
-                    title= 'Delete Asset?'
-                    break;
-
-                case 'image':
-                    action = 'deleteRecord'
-                    msg = "You won't be able to revert this!"
-                    cbutton = 'Delete'
-                    title= 'Delete Image?'
-                    break;
-
-                case 'audio':
-                    action = 'deleteRecord'
-                    msg = "You won't be able to revert this!"
-                    cbutton = 'Delete'
-                    title= 'Delete Audio?'
-                    break;
-
-                case 'doc':
-                    action = 'deleteRecord'
-                    msg = "You won't be able to revert this!"
-                    cbutton = 'Delete'
-                    title= 'Delete Doc?'
-                    break;
-
-                case 'other':
-                    action = 'deleteRecord'
-                    msg = "You won't be able to revert this!"
-                    cbutton = 'Delete'
-                    title= 'Delete File?'
-                    break;
-
-                default:
-                    break;
-            }
-
-            Swal.fire({
-                title: title,
-                text: msg,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: cbutton
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    return action
-                } else {
-                    return false
-                }
-            })
-        }
-
         function searchFunction() {
 
             if (document.getElementById('queryInput').value.length > 1) {
@@ -129,6 +59,13 @@
     </header>
 
     <input type="hidden" id="hiddenType" value="{{$type}}" />
+
+
+    {{-- NOTIFICATION --}}
+    @if ($notification)
+        <div class="notification {{$notification["type"]}} is-light">{!! $notification["message"] !!}</div>
+    @endif
+
 
     <x-table-filter type="{{$type}}" />
 
@@ -287,7 +224,7 @@
                     @foreach ($records as $record)
 
                         <div class="column is-3-desktop">
-                            <x-card-image :item="$record" />
+                            <x-card-image :image="$record" />
                         </div>
 
                     @endforeach
@@ -306,7 +243,7 @@
                     @foreach ($records as $record)
 
                         <div class="column is-3-desktop">
-                            <x-card-video :item="$record" />
+                            <x-card-video :video="$record" />
                         </div>
 
                     @endforeach
@@ -368,11 +305,7 @@
 
                             <td class="has-text-right">
 
-                                {{-- <a href="/assets-view/{{ $record->id }}" class="icon">
-                                    <x-icon icon="edit" fill="{{config('constants.icons.color.active')}}"/>
-                                </a> --}}
-
-                                <a onclick="confirmDelete('{{ $type }}','{{ $record->id }}')" class="icon">
+                                <a onclick="swalConfirm('{{ $type }}','{{$record->asset_id}}','{{ $record->id }}')" class="icon">
                                     <x-icon icon="delete" fill="{{config('constants.icons.color.danger')}}"/>
                                 </a>
 
