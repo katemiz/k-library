@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
 
-use Illuminate\Support\Facades\Log;
-
 use Image;
 use FFMpeg;
 
@@ -39,8 +37,6 @@ class Video extends Model
         return $thumb;
     }
 
-
-    // ATTRIBUTES
     protected function thumbnail(): Attribute
     {
         return Attribute::make(

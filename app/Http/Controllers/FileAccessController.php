@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Gorsel;
 use App\Models\Audio;
 use App\Models\Dosya;
 use App\Models\Document;
-use App\Models\Video;
 
 class FileAccessController extends Controller
 {

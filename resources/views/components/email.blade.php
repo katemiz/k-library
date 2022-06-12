@@ -1,6 +1,3 @@
-
-
-
 <div class="field">
 
     <label class="label has-text-info has-text-weight-light" for="email">{{__('Email')}}</label>

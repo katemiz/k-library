@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class AssetView extends Component
 {
     public $isImgModalVisible = false;
-    public $photo_data = '';
+    public $img_modal_data = '';
     public $notification = false;
     public $icerik = '';
 
@@ -27,6 +27,8 @@ class AssetView extends Component
     public function render(Request $request)
     {
         $asset = Asset::find($request->id);
+
+        // dd(['a' => $request->id, 'asset' => $asset]);
 
         if (Auth::id() !== $asset->owner_id) {
             return false;
@@ -38,20 +40,26 @@ class AssetView extends Component
         ]);
     }
 
-    public function showPhoto(Request $request, $assetId, $photoId)
+    public function imageModal(Request $request, $assetId, $imgId)
     {
-        $p = Gorsel::find($photoId);
+        $p = Gorsel::find($imgId);
 
         $request->id = $assetId; // needed for render()
 
         $this->isImgModalVisible = true;
 
-        $this->photo_data = Gorsel::previewGorsel($p->stored_as);
+        $this->img_modal_data = Gorsel::previewGorsel($p->stored_as);
     }
 
     public function deleteAsset($assetId)
     {
         $asset = Asset::find($assetId);
+
+        if ($asset->is_fake) {
+            $redirect = 'assetf';
+        } else {
+            $redirect = 'asset';
+        }
 
         foreach ($asset->images as $image) {
             Gorsel::find($image->id)->delete();
@@ -80,11 +88,16 @@ class AssetView extends Component
 
         $asset->delete();
 
-        return redirect('/assets-list/assets', ['m' => 'delete']);
+        return redirect('/list-records/' . $redirect, ['m' => 'delete']);
     }
 
     public function deleteAttach(Request $request, $type, $assetId, $id)
     {
+        if ($type == 'asset') {
+            $this->deleteAsset($assetId);
+            return true;
+        }
+
         switch ($type) {
             case 'image':
                 $attach = Gorsel::find($id);
@@ -98,7 +111,7 @@ class AssetView extends Component
                 $attach = Video::find($id);
                 break;
 
-            case 'doc':
+            case 'document':
                 $attach = Document::find($id);
                 break;
 

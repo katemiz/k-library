@@ -3,9 +3,7 @@
 
 @section('content')
 
-
     <section class="hero is-medium ">
-
 
         <figure class="image is-16by9">
             <img alt="library" class="hero-background" src="images/library.svg">

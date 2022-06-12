@@ -1,6 +1,3 @@
-
-
-
 @switch($attributes['action'])
 
     @case('login')
@@ -66,13 +63,4 @@
 
         @break
 
-
 @endswitch
-
-
-
-
-
-
-
-

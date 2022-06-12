@@ -192,7 +192,7 @@ class ListRecords extends Component
                 $attach = Video::find($id);
                 break;
 
-            case 'doc':
+            case 'document':
                 $attach = Document::find($id);
                 break;
 

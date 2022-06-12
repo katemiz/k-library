@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
-
-use Illuminate\Support\Facades\Log;
 
 use Image;
 
@@ -116,9 +113,6 @@ class Gorsel extends Model
         return floatval($parts[0]) / floatval($parts[1]);
     }
 
-
-
-
     public static function previewGorsel($imagepath)
     {
 
@@ -126,10 +120,7 @@ class Gorsel extends Model
         $gorsel = $gorsel->orientate();
 
         return (string) $gorsel->encode('data-url');
-
     }
-
-
 
     public static function createThumb($imagepath)
     {
@@ -151,7 +142,6 @@ class Gorsel extends Model
         return $thumb;
     }
 
-    // ATTRIBUTES
     protected function thumbnail(): Attribute
     {
         return Attribute::make(

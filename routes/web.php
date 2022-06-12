@@ -42,8 +42,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('resimCheck')
         ->middleware('auth');
 
-    // LIBRARY ASSET
-    // Route::get('/assets-list/{type}', AssetsTable::class);
     Route::get('/asset-view/{id}', AssetView::class)->name('view');
 
     Route::get('assets-form', [AssetController::class, 'forms']);
@@ -54,12 +52,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('assets-add', [AssetController::class, 'store']);
     Route::post('assets-update/{id}', [AssetController::class, 'update']);
 
-    Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
-    Route::get('delete/{id}', [AssetController::class, 'destroy']);
-    Route::get('/delete-attach/{type}/{asset_id}/{id}', [
-        AssetController::class,
-        'deleteattach',
-    ]);
+    // Route::get('delconfirm/{id}', [AssetController::class, 'delconfirm']);
+    // Route::get('delete/{id}', [AssetController::class, 'destroy']);
+    // Route::get('/delete-attach/{type}/{asset_id}/{id}', [
+    //     AssetController::class,
+    //     'deleteattach',
+    // ]);
 
     Route::get('/access-audio/{id}', [FileAccessController::class, 'audio']);
     Route::get('/access-document/{id}', [FileAccessController::class, 'docs']);

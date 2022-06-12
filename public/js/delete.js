@@ -26,7 +26,7 @@ function swalConfirm(type, assetId, id) {
       title = 'Delete Video?'
       break
 
-    case 'doc':
+    case 'document':
       msg = "You won't be able to revert this!"
       cbutton = 'Delete'
       title = 'Delete Doc?'

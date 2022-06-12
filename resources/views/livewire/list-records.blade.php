@@ -231,8 +231,6 @@
                 </div>
                 @break
 
-
-
             {{-- VIDEO --}}
             {{-- --------------------------- --}}
             @case('video')
@@ -253,7 +251,7 @@
             {{-- DEFAULT --}}
             {{-- --------------------------- --}}
             @case('audio')
-            @case('doc')
+            @case('document')
             @case('other')
             @default
 

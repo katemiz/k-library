@@ -35,19 +35,14 @@
     {{-- IMAGES --}}
     @if (count($asset->images) > 0)
     <div class="box">
-
         <p class="menu-label">IMAGE FILES </p>
-
         <div class="columns is-multiline">
-
             @foreach ($asset->images as $image )
             <div class="column is-3-desktop">
                 <x-card-image :image="$image" />
             </div>
             @endforeach
-
         </div>
-
     </div>
     @endif
 
@@ -83,7 +78,7 @@
         <p class="menu-label">DOC FILES </p>
         <table class="table is-fullwidth">
             @foreach ($asset->docs as $doc )
-                <x-card-view-dosya type="doc" :item="$doc" :asset="$asset"/>
+                <x-card-view-dosya type="document" :item="$doc" :asset="$asset"/>
             @endforeach
         </table>
     </div>
@@ -102,71 +97,14 @@
     @endif
 
     {{--  DATE INFO  --}}
-    <nav class="level">
-        <!-- Left side -->
-        <div class="level-left">
-            {{$asset->created_at}}
-        </div>
-
-        <!-- Right side -->
-        <div class="level-right">
-            {{$asset->carbon_created_at}}
-        </div>
-    </nav>
-
-    {{-- MODALS : IMAGE PROPS --}}
-    @foreach ($asset->images as $photo )
-        <div class="modal" id="m{{$photo->id}}">
-            <div class="modal-background" onclick="closeModal('m{{$photo->id}}')"></div>
-            <div class="modal-card">
-
-            <header class="modal-card-head">
-                <p class="modal-card-title">{{$photo->filename}}</p>
-                <button class="delete" aria-label="close" onclick="closeModal('m{{$photo->id}}')"></button>
-            </header>
-
-            <section class="modal-card-body">
-                <table class="table is-fullwidth">
-                    <tr>
-                        <td class="has-text-right has-text-grey">Camera</td>
-                        <td>{{$photo->camera ? $photo->camera : 'No data'}}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="has-text-right has-text-grey">Date Taken</td>
-                        <td>{{$photo->datetaken ? $photo->datetaken : 'No data'}}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="has-text-right has-text-grey">Location</td>
-                        <td>
-                            @if ($photo->location)
-
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <x-icon icon="place" fill="{{config('constants.icons.color.active')}}"/>
-                                    </span>
-                                    <span>{{$photo->location}}</span>
-                                </span>
-
-                            @else
-                                <p>No data</p>
-                            @endif
-                        </td>
-                    </tr>
-                </table>
-            </section>
-
-            </div>
-        </div>
-    @endforeach
+    <x-card-date :item="$asset" />
 
     {{-- IMAGE MODAL --}}
     <div class="modal {{$isImgModalVisible ? 'is-active':''}}" id="img">
         <div class="modal-background" wire:click="closeModal('{{$asset->id}}')"></div>
         <div class="modal-content">
           <p class="image">
-            <img src="{{ $photo_data }}">
+            <img src="{{ $img_modal_data }}">
           </p>
         </div>
         <button class="modal-close is-large" aria-label="close" wire:click="closeModal('{{$asset->id}}')"></button>
