@@ -147,10 +147,6 @@ class AssetController extends Controller
                 $saved_dir = Storage::disk('local')->put($filename, $dosya);
 
                 $this->saveRecord($dosya, $id, $saved_dir);
-
-                //$newfile = Record::create($dosya_data);
-
-                //$this->addedfiles[] = $newfile->id;
             }
         }
     }
@@ -244,7 +240,7 @@ class AssetController extends Controller
             $is_fake = $asset->is_fake;
         }
 
-        return view('asset.form', [
+        return view('form', [
             'asset' => $asset,
             'addfilesonly' => $is_fake,
         ]);
@@ -254,7 +250,7 @@ class AssetController extends Controller
     {
         $asset = false;
 
-        return view('asset.form', ['asset' => $asset, 'addfilesonly' => true]);
+        return view('form', ['asset' => $asset, 'addfilesonly' => true]);
     }
 
     public function show(Request $request)

@@ -1,22 +1,9 @@
 @props(['errors'])
 
-
-
-
 @if ($errors->any())
-
     <div {{ $attributes }}>
-        {{-- <div>
-            {{ __('Whoops! Something went wrong.') }}
-        </div> --}}
-
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
     </div>
 @endif
-
-
-

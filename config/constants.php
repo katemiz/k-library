@@ -21,7 +21,7 @@ return [
         'copyright' => '© 2022 All Rights Reserved',
     ],
 
-    'favicon' => '/images/tensor_favicon.svg',
+    'favicon' => '/images/favicon.svg',
 
     'icons' => [
         'size' => '24',

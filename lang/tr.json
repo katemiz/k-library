@@ -7,6 +7,7 @@
 
   "Email": "E-Posta",
   "Password": "Şifre",
+  "New Password": "Yeni Şifre",
   "Your Password": "Şifreniz",
   "Log In": "Giriş",
   "Log Out": "Çıkış",
@@ -24,6 +25,7 @@
   "A new verification link has been sent to the email address you provided during registration.": "Yeni doğrulama bağlantısı e-posta adresinize gönderilmiştir.",
   "Resend Verification Email": "Doğrulama Bağlantısı Gönder",
   "Whoops!": "Hata!",
+  "Whoops! Something went wrong.": "Yolunda gitmeyen şeyler var!",
   "Hello!": "Merhaba",
   "Regards": "Saygılarımızla",
 

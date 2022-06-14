@@ -1,7 +1,5 @@
-@extends('layouts.layout')
+<x-app-layout>
 
-
-@section('content')
 
     <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
 
@@ -285,4 +283,4 @@
     </script>
     @endif
 
-@endsection
+</x-app-layout>

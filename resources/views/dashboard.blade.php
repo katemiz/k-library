@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-app-layout>
 
     <section class="section container">
 
@@ -53,5 +51,4 @@
         </div>
 
     </section>
-
-@endsection
+</x-app-layout>

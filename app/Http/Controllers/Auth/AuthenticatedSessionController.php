@@ -7,7 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -16,24 +15,8 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-
-    public function SILchangeLang(Request $request)
+    public function create()
     {
-        if ($request->has('lang')) {
-            app()->setLocale($request->lang);
-        }
-        //dd($request->url);
-        return Redirect::to($request->url);
-
-        //return view('auth.login');
-    }
-
-    public function create(Request $request)
-    {
-        if ($request->has('lang')) {
-            app()->setLocale($request->lang);
-        }
-
         return view('auth.login');
     }
 

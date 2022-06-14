@@ -28,8 +28,6 @@ class AssetView extends Component
     {
         $asset = Asset::find($request->id);
 
-        // dd(['a' => $request->id, 'asset' => $asset]);
-
         if (Auth::id() !== $asset->owner_id) {
             return false;
         }
