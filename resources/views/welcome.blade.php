@@ -16,7 +16,11 @@
             </header>
 
             <p class="mb-3">
-                <a href="https://github.com/katemiz/k-library">{{config('constants.app.name')}}</a>, "{{config('constants.app.title')}}" is an app designed to keep your digital assets in one place and accessible <strong>only for you</strong>. Wherever your are, whenever you need your digital assets, theyare available for you only.
+                <a href="https://github.com/katemiz/k-library">{{config('constants.app.name')}}</a>, "{{config('constants.app.title')}}" is an app designed to keep your digital assets in one place and accessible <strong>only for you</strong>. Wherever your are, whenever you need your digital assets, they are available for you only.
+            </p>
+
+            <p class="subtitle">
+                Need to host your own server?
             </p>
 
             <p class="mb-3">
@@ -27,7 +31,7 @@
 
                 <div class="column  is-half">
 
-                    <h2 class="subtitle has-text-weight-light">Categorized Data Types</h2>
+                    <h2 class="subtitle">Categorized Data Types</h2>
 
 
                     <div class="content">
