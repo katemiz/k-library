@@ -252,7 +252,9 @@
             </div>
             @endif
 
-            <button type="submit" class="button is-link is-light">{{$asset ? 'Update' : 'Save'}}</button>
+            <div class="column has-text-right">
+                <button type="submit" class="button is-link is-light">{{$asset ? 'Update' : 'Save'}}</button>
+            </div>
 
             </form>
 
