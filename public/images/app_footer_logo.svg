@@ -9,8 +9,8 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    enable-background="new 0 0 24 24"
    height="340"
-   viewBox="0 0 360 340"
-   width="360"
+   viewBox="0 0 252 340"
+   width="252"
    version="1.1"
    id="svg26"
    sodipodi:docname="app_footer_logo.svg"
@@ -27,7 +27,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -47,14 +47,15 @@
      id="namedview28"
      showgrid="false"
      inkscape:zoom="1.33"
-     inkscape:cx="103.11558"
+     inkscape:cx="-32.222766"
      inkscape:cy="200.07519"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg26" />
   <g
-     id="g2926">
+     id="g2926"
+     transform="translate(-51.653155,8.2943929)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#083d77;fill-opacity:1;stroke:none;stroke-width:1.5"

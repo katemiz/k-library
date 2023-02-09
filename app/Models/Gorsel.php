@@ -137,7 +137,6 @@ class Gorsel extends Model
 
     public static function previewGorsel($imagepath)
     {
-
         $gorsel = Image::make(Storage::path($imagepath));
         $gorsel = $gorsel->orientate();
 

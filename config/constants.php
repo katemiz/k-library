@@ -54,4 +54,22 @@ return [
         'document' => 'Documents',
         'dosya' => 'Others',
     ],
+
+    'file_vs_mime_types' => [
+        'img' => ['image/jpeg', 'image/png', 'image/gif'],
+
+        'audio' => ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/webm'],
+
+        'video' => [
+            'video/ogg',
+            'video/mp4',
+            'video/mpeg',
+            'video/x-ms-asf',
+            'video/x-msvideo',
+            'video/quicktime',
+            'video/webm',
+        ],
+
+        'doc' => ['application/pdf'],
+    ],
 ];

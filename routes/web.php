@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\FileAccessController;
+use App\Http\Controllers\MassProcess;
 use App\Http\Livewire\AssetView;
 use App\Http\Livewire\ListRecords;
+use App\Http\Livewire\ProcessFolder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,4 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/access-dosya/{id}', [FileAccessController::class, 'dosya']);
 
     Route::get('/list-records/{type}', ListRecords::class);
+
+    Route::get('/process-files/{tur?}', ProcessFolder::class)->name(
+        'processfiles'
+    );
+    Route::get('/mass-process/{tur}', [AssetController::class, 'mass']);
 });

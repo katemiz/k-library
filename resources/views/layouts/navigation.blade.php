@@ -58,6 +58,14 @@
                         </span>
                         <span class="ml-1">Add Files</span>
                     </a>
+
+
+                    <a href="/process-files/" class="navbar-item">
+                        <span class="icon">
+                            <x-icon icon="add-file" fill="{{config('constants.icons.color.active')}}" />
+                        </span>
+                        <span class="ml-1">Folder Files</span>
+                    </a>
                 </div>
 
               </div>

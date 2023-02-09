@@ -31,6 +31,26 @@ class AssetController extends Controller
     public $active_sortcolumn = 'title';
     public $addedfiles = [];
 
+    public $mime_types;
+
+    public $ftypes = [
+        'img' => ['image/jpeg', 'image/png', 'image/gif'],
+
+        'audio' => ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/webm'],
+
+        'video' => [
+            'video/ogg',
+            'video/mp4',
+            'video/mpeg',
+            'video/x-ms-asf',
+            'video/x-msvideo',
+            'video/quicktime',
+            'video/webm',
+        ],
+
+        'doc' => ['application/pdf'],
+    ];
+
     public function getAssets($request)
     {
         $params = false;
@@ -338,5 +358,35 @@ class AssetController extends Controller
                 Dosya::create($dosya_data);
                 break;
         }
+    }
+
+    public function mass()
+    {
+        if (request('tur') > 0) {
+            $this->tur = request('tur');
+            $this->mime_types = $this->ftypes[$this->tur];
+        }
+
+        $eklenenler = [];
+
+        $files = Storage::files('gallery');
+
+        foreach ($files as $file) {
+            $mimeType = Storage::mimeType($file);
+
+            $dosya = Storage::get($file);
+
+            if (in_array($mimeType, $this->mime_types)) {
+                // if (in_array($file->getMimeType(), $this->mime_types)) {
+                $storedir = '/usr' . Auth::id() . '/' . $mimeType;
+                $saved_dir = Storage::disk('local')->put($storedir, $file);
+
+                $this->saveRecord($dosya, null, $saved_dir);
+
+                array_push($eklenenler, $storedir);
+            }
+        }
+
+        return redirect()->route('processfiles', ['eklenenler' => $eklenenler]);
     }
 }
